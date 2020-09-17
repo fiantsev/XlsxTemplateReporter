@@ -1,0 +1,115 @@
+﻿{
+    "cols": [
+        [ "Прибыль", "Барнаул" ],
+        [ "Прибыль", "Владивосток" ],
+        [ "Прибыль", "Иркутск" ],
+        [ "Прибыль", "Москва" ],
+        [ "Прибыль", "Нижнеудинск" ],
+        [ "Прибыль", "Самара" ],
+        [ "Прибыль", "Севастополь" ],
+        [ "Прибыль", "Сызрань" ],
+        [ "Прибыль", "Тольятти" ]
+    ],
+    "rows": [
+        [ "2016" ],
+        [ "2017" ],
+        [ "2018" ],
+        [ "2019" ]
+    ],
+    "values": [
+        [ 339197.52, 578846.78, 889796.65, 1285541.88 ],
+        [ 344708.77, 584115.6, 847734.62, 1220890.12 ],
+        [ 330714.11, 587170.71, 884385.43, 1210765.94 ],
+        [ 322247.67, 551839.32, 876718.98, 1256408.05 ],
+        [ 333330.32, 579907.92, 917958.77, 1266033.84 ],
+        [ 323831.35, 581602.93, 880779.2, 1233421.24 ],
+        [ 335503.4, 569314.91, 870252.86, 1280043.13 ],
+        [ 320891.4, 567862.02, 895378.86, 1250548.13 ],
+        [ 329944.5, 595131.09, 897991.79, 1247565.16 ]
+    ],
+    "colsMeta": [
+        {
+            "measureGroupId": [ "Fakticheskie_prodazhi_v_rublyah" ],
+            "measureId": [ "Pribil" ],
+            "dimensions": [ "Барнаул" ]
+        },
+        {
+            "measureGroupId": [ "Fakticheskie_prodazhi_v_rublyah" ],
+            "measureId": [ "Pribil" ],
+            "dimensions": [ "Владивосток" ]
+        },
+        {
+            "measureGroupId": [ "Fakticheskie_prodazhi_v_rublyah" ],
+            "measureId": [ "Pribil" ],
+            "dimensions": [ "Иркутск" ]
+        },
+        {
+            "measureGroupId": [ "Fakticheskie_prodazhi_v_rublyah" ],
+            "measureId": [ "Pribil" ],
+            "dimensions": [ "Москва" ]
+        },
+        {
+            "measureGroupId": [ "Fakticheskie_prodazhi_v_rublyah" ],
+            "measureId": [ "Pribil" ],
+            "dimensions": [ "Нижнеудинск" ]
+        },
+        {
+            "measureGroupId": [ "Fakticheskie_prodazhi_v_rublyah" ],
+            "measureId": [ "Pribil" ],
+            "dimensions": [ "Самара" ]
+        },
+        {
+            "measureGroupId": [ "Fakticheskie_prodazhi_v_rublyah" ],
+            "measureId": [ "Pribil" ],
+            "dimensions": [ "Севастополь" ]
+        },
+        {
+            "measureGroupId": [ "Fakticheskie_prodazhi_v_rublyah" ],
+            "measureId": [ "Pribil" ],
+            "dimensions": [ "Сызрань" ]
+        },
+        {
+            "measureGroupId": [ "Fakticheskie_prodazhi_v_rublyah" ],
+            "measureId": [ "Pribil" ],
+            "dimensions": [ "Тольятти" ]
+        }
+    ],
+    "colsInfo": [
+        {
+            "id": "\"Fakticheskie_prodazhi_v_rublyah\",\"Pribil\",\"Барнаул\"",
+            "idParts": [ "Fakticheskie_prodazhi_v_rublyah", "Pribil", "Барнаул" ]
+        },
+        {
+            "id": "\"Fakticheskie_prodazhi_v_rublyah\",\"Pribil\",\"Владивосток\"",
+            "idParts": [ "Fakticheskie_prodazhi_v_rublyah", "Pribil", "Владивосток" ]
+        },
+        {
+            "id": "\"Fakticheskie_prodazhi_v_rublyah\",\"Pribil\",\"Иркутск\"",
+            "idParts": [ "Fakticheskie_prodazhi_v_rublyah", "Pribil", "Иркутск" ]
+        },
+        {
+            "id": "\"Fakticheskie_prodazhi_v_rublyah\",\"Pribil\",\"Москва\"",
+            "idParts": [ "Fakticheskie_prodazhi_v_rublyah", "Pribil", "Москва" ]
+        },
+        {
+            "id": "\"Fakticheskie_prodazhi_v_rublyah\",\"Pribil\",\"Нижнеудинск\"",
+            "idParts": [ "Fakticheskie_prodazhi_v_rublyah", "Pribil", "Нижнеудинск" ]
+        },
+        {
+            "id": "\"Fakticheskie_prodazhi_v_rublyah\",\"Pribil\",\"Самара\"",
+            "idParts": [ "Fakticheskie_prodazhi_v_rublyah", "Pribil", "Самара" ]
+        },
+        {
+            "id": "\"Fakticheskie_prodazhi_v_rublyah\",\"Pribil\",\"Севастополь\"",
+            "idParts": [ "Fakticheskie_prodazhi_v_rublyah", "Pribil", "Севастополь" ]
+        },
+        {
+            "id": "\"Fakticheskie_prodazhi_v_rublyah\",\"Pribil\",\"Сызрань\"",
+            "idParts": [ "Fakticheskie_prodazhi_v_rublyah", "Pribil", "Сызрань" ]
+        },
+        {
+            "id": "\"Fakticheskie_prodazhi_v_rublyah\",\"Pribil\",\"Тольятти\"",
+            "idParts": [ "Fakticheskie_prodazhi_v_rublyah", "Pribil", "Тольятти" ]
+        }
+    ]
+}
