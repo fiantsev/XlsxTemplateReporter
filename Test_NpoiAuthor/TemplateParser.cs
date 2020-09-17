@@ -17,7 +17,7 @@ namespace Test
                 Console.WriteLine($"|sheet SheetName={sheet.SheetName} FirstRowNum={sheet.FirstRowNum} LastRowNum={sheet.LastRowNum} PhysicalNumberOfRows={sheet.PhysicalNumberOfRows} TablesCount={tables.Count} PivotTablesCount={sheet.GetPivotTables().Count}|");
 
                 foreach(var table in tables)
-                    Console.WriteLine($"  /table Name={table.DisplayName} ref={table.GetCTTable().@ref} StartCellReference={table.GetStartCellReference()} EndCellReference={table.GetEndCellReference()}/");
+                    Console.WriteLine($"  /table Name={table.DisplayName} ref={table.GetCTTable().@ref} StartCellReference={table.StartCellReference} EndCellReference={table.EndCellReference}/");
 
                 //var names = workbook.NumberOfNames
                 for(var nameIndex = 0; nameIndex < workbook.NumberOfNames; ++nameIndex)

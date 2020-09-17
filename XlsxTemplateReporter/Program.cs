@@ -12,11 +12,13 @@ namespace XlsxTemplateReporter
     {
         static void Main(string[] args)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             var templates = new[]
             {
                 //"template1",
                 //"template2",
                 "template3",
+                //"template4",
             };
             var files = templates.Select(x => new { 
                 In = $"./Templates/{x}.xlsx",
@@ -29,17 +31,13 @@ namespace XlsxTemplateReporter
                 using var fileStream = File.Open(file.In, FileMode.Open, FileAccess.ReadWrite);
                 var workbook = new XSSFWorkbook(fileStream);
                 TemplateParser.PrintFullInfo(workbook);
-                var service = new TemplateDataInjectorService();
-                service.InjectData(workbook, PrepareData());
-
+                (new TemplateDataInjectorService()).InjectData(workbook, PrepareData());
                 using (var outputFileStream = File.Open(file.Out, FileMode.Create, FileAccess.ReadWrite))
-                {
                     workbook.Write(outputFileStream);
-                }
             });
-            
+
             //Console.WriteLine("Press any key to exit");
-            //Console.ReadKey();
+            Console.ReadKey();
         }
 
         static Dictionary<string, WidgetData> PrepareData()
