@@ -14,8 +14,8 @@ namespace XlsxTemplateReporter
         {
             var templates = new[]
             {
-                "template1",
-                "template2",
+                //"template1",
+                //"template2",
                 "template3",
             };
             var files = templates.Select(x => new { 
@@ -25,8 +25,10 @@ namespace XlsxTemplateReporter
 
             files.ToList().ForEach(file =>
             {
+                Console.WriteLine($"workbook: {file}");
                 using var fileStream = File.Open(file.In, FileMode.Open, FileAccess.ReadWrite);
                 var workbook = new XSSFWorkbook(fileStream);
+                TemplateParser.PrintFullInfo(workbook);
                 var service = new TemplateDataInjectorService();
                 service.InjectData(workbook, PrepareData());
 
@@ -36,8 +38,8 @@ namespace XlsxTemplateReporter
                 }
             });
             
-            Console.WriteLine("Press any key to exit");
-            Console.ReadKey();
+            //Console.WriteLine("Press any key to exit");
+            //Console.ReadKey();
         }
 
         static Dictionary<string, WidgetData> PrepareData()

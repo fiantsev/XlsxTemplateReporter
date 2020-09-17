@@ -32,30 +32,33 @@ namespace Test
             Enumerable.Range(0, workbook.NumberOfSheets).ToList()
                 .ForEach(sheetIndex =>
                 {
-                    var sheet = workbook.GetSheetAt(sheetIndex);
-                    Console.WriteLine($"|sheet SheetName={sheet.SheetName} FirstRowNum={sheet.FirstRowNum} LastRowNum={sheet.LastRowNum} PhysicalNumberOfRows={sheet.PhysicalNumberOfRows}|");
+                    var sheet = (XSSFSheet)workbook.GetSheetAt(sheetIndex);
+                    var tableNames = string.Join(",", sheet.GetTables().Select(x => x.DisplayName));
+                    //Console.WriteLine($"|sheet SheetName={sheet.SheetName} FirstRowNum={sheet.FirstRowNum} LastRowNum={sheet.LastRowNum} PhysicalNumberOfRows={sheet.PhysicalNumberOfRows} Tables={tableNames} PivotTablesCount={sheet.GetPivotTables().Count}|");
 
                     for (var rowIndex = sheet.FirstRowNum; rowIndex <= sheet.LastRowNum; ++rowIndex)
                     {
                         var row = sheet.GetRow(rowIndex);
                         if (row == null)
                         {
-                            Console.WriteLine($"\t[row {rowIndex} isEmpty]");
+                            //Console.WriteLine($"\t[row {rowIndex} isEmpty]");
                             continue;
                         }
-                        Console.WriteLine($"\t[row {rowIndex} FirstCellNum={row.FirstCellNum} LastCellNum={row.LastCellNum} PhysicalNumberOfCells={row.PhysicalNumberOfCells}]");
+                        //Console.WriteLine($"\t[row {rowIndex} FirstCellNum={row.FirstCellNum} LastCellNum={row.LastCellNum} PhysicalNumberOfCells={row.PhysicalNumberOfCells}]");
 
                         for (var cellIndex = row.FirstCellNum; cellIndex < row.LastCellNum; ++cellIndex)
                         {
                             var cell = row.GetCell(cellIndex);
-                            Console.Write($"\t\t<cell {cell.RowIndex}.{cell.ColumnIndex} type={cell.CellType} value={cell.ToString()}> ");
+                            if (cell == null)
+                                continue;
+                            //Console.Write($"\t\t<cell {cell.RowIndex}.{cell.ColumnIndex} type={cell.CellType} value={cell.ToString()}> ");
                             if (IsMarkedCell(cell))
                                 result.Add(new MarkerInfo { SheetIndex = sheetIndex, RowIndex = rowIndex, CellIndex = cellIndex, MarkerId = ExtractMarkerValue(cell) });
                         }
-                        Console.WriteLine();
+                        //Console.WriteLine();
                     }
                 });
-            Console.WriteLine();
+            //Console.WriteLine();
             return result;
         }
 
@@ -84,7 +87,7 @@ namespace Test
             List<DataInjection> dataInjections
         )
         {
-            dataInjections.ForEach(dataInjection => InsertCellRange(workbook, dataInjection.MarkerInfo, dataInjection.WidgetData.Values));
+            dataInjections.ForEach(dataInjection => InsertCellRangeIntoTable(workbook, dataInjection.MarkerInfo, dataInjection.WidgetData.Values));
         }
 
 
@@ -121,6 +124,45 @@ namespace Test
                     currentCell.SetCellValue(dataValue);
                 }
             }
+        }
+
+
+        private void InsertCellRangeIntoTable(XSSFWorkbook workbook, MarkerInfo markerInfo, List<List<string>> dataSet)
+        {
+            var dataSetRowCount = dataSet.Count;
+            var dataSetColCount = dataSet.Count == 0
+                ? 0
+                : dataSet[0].Count;
+
+            var insertionStartRowIndex = markerInfo.RowIndex;
+            var insertionStartCellIndex = markerInfo.CellIndex;
+
+            var sheet = (XSSFSheet)workbook.GetSheetAt(markerInfo.SheetIndex);
+            var tables = sheet.GetTables();
+            for (var dataRowIndex = 0; dataRowIndex < dataSetRowCount; ++dataRowIndex)
+            {
+                var dataRow = dataSet[dataRowIndex];
+                var currentRowIndex = insertionStartRowIndex + dataRowIndex;
+                var currentRow = sheet.GetRow(currentRowIndex);
+
+                if (currentRow == null)
+                    currentRow = sheet.CreateRow(currentRowIndex);
+
+                for (var dataColIndex = 0; dataColIndex < dataSetColCount; ++dataColIndex)
+                {
+                    var dataValue = dataRow[dataColIndex];
+                    var currentCellIndex = insertionStartCellIndex + dataColIndex;
+                    var currentCell = currentRow.GetCell(currentCellIndex);
+
+                    if (currentCell == null)
+                        currentCell = currentRow.CreateCell(currentCellIndex);
+
+                    currentCell.SetCellType(CellType.Numeric);
+                    currentCell.SetCellValue(dataValue);
+                }
+            }
+
+            tables[0].GetCTTable().@ref = "B2:J6";
         }
     }
 
