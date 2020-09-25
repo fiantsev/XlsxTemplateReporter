@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NPOI.XSSF.UserModel;
+﻿using NPOI.XSSF.UserModel;
+using System;
 
 namespace Test
 {
@@ -24,6 +21,12 @@ namespace Test
                 {
                     var name = workbook.GetNameAt(nameIndex);
                     Console.WriteLine($"  /name ToString={name.ToString()} NameName={name.NameName} /");
+                }
+
+                for(var mergedRegionIndex=0;mergedRegionIndex< sheet.NumMergedRegions; ++mergedRegionIndex)
+                {
+                    var mergedRegion = sheet.GetMergedRegion(mergedRegionIndex);
+                    Console.WriteLine($"  +mergedRegion ToString={mergedRegion.ToString()} +");
                 }
 
                 for (var rowIndex = sheet.FirstRowNum; rowIndex <= sheet.LastRowNum; ++rowIndex)

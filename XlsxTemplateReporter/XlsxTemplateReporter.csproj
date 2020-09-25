@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Test\Test_NpoiDotnet.csproj" />
+    <ProjectReference Include="..\Test_ClosedXML\Test_ClosedXML.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,10 +26,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Templates\template1.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="Templates\template2.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

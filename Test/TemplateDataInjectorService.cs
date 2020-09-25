@@ -138,8 +138,8 @@ namespace Test
             var insertionStartCellIndex = markerInfo.CellIndex;
 
             var sheet = (XSSFSheet)workbook.GetSheetAt(markerInfo.SheetIndex);
-            var tables = sheet.GetTables();
-            sheet.ShiftRows(4, sheet.LastRowNum, 2);
+            //var tables = sheet.GetTables();
+            //sheet.ShiftRows(4, sheet.LastRowNum, 2);
             for (var dataRowIndex = 0; dataRowIndex < dataSetRowCount; ++dataRowIndex)
             {
                 var dataRow = dataSet[dataRowIndex];
@@ -163,7 +163,7 @@ namespace Test
                 }
             }
 
-            tables[0].GetCTTable().@ref = "B2:J6";
+            //tables[0].GetCTTable().@ref = "B2:J6";
         }
     }
 
