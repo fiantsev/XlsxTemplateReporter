@@ -2,7 +2,7 @@
 using ExcelReportCreatorProject.Domain.Markers;
 using NPOI.SS.UserModel;
 
-namespace ExcelReportCreatorProject
+namespace ExcelReportCreatorProject.Service.Injection
 {
     public class InjectionContext
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ExcelReportCreatorProject
+namespace ExcelReportCreatorProject.Service.Injection
 {
     public interface IResourceInjector
     {

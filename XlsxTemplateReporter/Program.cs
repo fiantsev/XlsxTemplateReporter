@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using ClosedXML.Excel;
 using ExcelReportCreatorProject;
 using ExcelReportCreatorProject.Domain;
+using ExcelReportCreatorProject.Domain.ResourceObjects;
 using ExcelReportCreatorProject.Service.Creator;
+using ExcelReportCreatorProject.Service.Injection;
 using ExcelReportCreatorProject.Service.MarkerExtraction;
 using ExcelReportCreatorProject.Service.ResourceObjectProvider;
 using Newtonsoft.Json;
@@ -50,8 +53,29 @@ namespace XlsxTemplateReporter
                     Console.WriteLine($"sheet: {sheet.SheetName}");
                     Console.WriteLine($"region: marker {{{{{region.StartMarker.Id}}}}} from [{region.StartMarker.Position.RowIndex};{region.StartMarker.Position.CellIndex}] to [{region.EndMarker.Position.RowIndex};{region.EndMarker.Position.RowIndex}]");
                     Console.WriteLine($"resourceObject: {resourceObject.GetType().Name}");
+
+                    switch (resourceObject)
+                    {
+                        case TableResourceObject table: ctx.InjectListOfList(table.Table.Values); break;
+                        default: throw new Exception();
+                    }
+                    
                 });
-                var resourceObjectProvider = new ResourceObjectProvider();
+                var resourceObjectProvider = new ResourceObjectProvider(markerId =>
+                {
+                    var widgetData = PrepareData()["table1"];
+                    var table = new XTable
+                    {
+                        Colums = Invert(widgetData.Cols),
+                        Rows = widgetData.Rows,
+                        Values = Invert(widgetData.Values)
+                    };
+                    var resource = new TableResourceObject
+                    {
+                        Table = table
+                    };
+                    return resource;
+                });
                 var excelReportCreator = new ExcelReportCreator(new ExcelReportCreatorOptions
                 {
                     ResourceInjector = resourceInjector,

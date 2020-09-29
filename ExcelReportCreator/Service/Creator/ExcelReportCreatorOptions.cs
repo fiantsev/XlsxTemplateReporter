@@ -1,4 +1,5 @@
-﻿using ExcelReportCreatorProject.Service.MarkerExtraction;
+﻿using ExcelReportCreatorProject.Service.Injection;
+using ExcelReportCreatorProject.Service.MarkerExtraction;
 using ExcelReportCreatorProject.Service.ResourceObjectProvider;
 
 namespace ExcelReportCreatorProject.Service.Creator

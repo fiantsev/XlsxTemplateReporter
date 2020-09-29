@@ -1,6 +1,6 @@
 ﻿using ExcelReportCreatorProject.Domain.Markers;
-using ExcelReportCreatorProject.Domain.ResourceObjects;
 using ExcelReportCreatorProject.Service.Creator;
+using ExcelReportCreatorProject.Service.Injection;
 using ExcelReportCreatorProject.Service.MarkerExtraction;
 using ExcelReportCreatorProject.Service.ResourceObjectProvider;
 using NPOI.SS.UserModel;
@@ -39,11 +39,12 @@ namespace ExcelReportCreatorProject
 
         private void InjectResourceToSheet(ISheet sheet, MarkerRegion markerRegion)
         {
+            var resourceObject = _resourceObjectProvider.Resolve(markerRegion.StartMarker.Id);
             var injectionContext = new InjectionContext
             {
                 MarkerRegion = markerRegion,
                 Workbook = sheet.Workbook,
-                ResourceObject = new ResourceObject(),
+                ResourceObject = resourceObject,
             };
 
             _resourceInjector.Inject(injectionContext);
