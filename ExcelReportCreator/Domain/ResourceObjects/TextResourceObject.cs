@@ -1,4 +1,4 @@
-﻿namespace ExcelReportCreatorProject.Domain.Data
+﻿namespace ExcelReportCreatorProject.Domain.ResourceObjects
 {
     public class TextResourceObject : ResourceObject
     {

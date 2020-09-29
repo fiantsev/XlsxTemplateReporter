@@ -22,7 +22,8 @@ namespace ExcelReportCreatorProject.LowLevelOperations
 
         public static string ExtractMarkerValue(this ICell cell, MarkerOptions markerOptions)
         {
-            return cell.StringCellValue.Trim().Substring(markerOptions.Prefix.Length, cell.StringCellValue.Length - (markerOptions.Prefix.Length + markerOptions.Suffix.Length));
+            var stringCellValue = cell.StringCellValue.Trim();
+            return stringCellValue.Substring(markerOptions.Prefix.Length, cell.StringCellValue.Length - (markerOptions.Prefix.Length + markerOptions.Suffix.Length));
         }
     }
 }

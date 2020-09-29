@@ -4,11 +4,11 @@ namespace ExcelReportCreatorProject
 {
     public class ResourceInjector : IResourceInjector
     {
-        public ResourceInjector(Action<IInjectionContext> inject)
+        public ResourceInjector(Action<InjectionContext> inject)
         {
             Inject = inject;
         }
 
-        public Action<IInjectionContext> Inject { get; set; }
+        public Action<InjectionContext> Inject { get; set; }
     }
 }

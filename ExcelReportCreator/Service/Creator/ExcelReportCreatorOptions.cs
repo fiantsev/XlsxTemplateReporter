@@ -1,8 +1,12 @@
-﻿namespace ExcelReportCreatorProject.Service.Creator
+﻿using ExcelReportCreatorProject.Service.MarkerExtraction;
+using ExcelReportCreatorProject.Service.ResourceObjectProvider;
+
+namespace ExcelReportCreatorProject.Service.Creator
 {
     public class ExcelReportCreatorOptions
     {
-        public ParserOptions ParserOptions { get; set; }
         public IResourceInjector ResourceInjector { get; set; }
+        public IResourceObjectProvider ResourceObjectProvider { get; set; }
+        public MarkerExtractorOptions MarkerExtractorOptions { get; set; }
     }
 }

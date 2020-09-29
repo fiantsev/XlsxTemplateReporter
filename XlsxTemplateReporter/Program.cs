@@ -5,9 +5,14 @@ using System.IO;
 using System.Linq;
 using ClosedXML.Excel;
 using ExcelReportCreatorProject;
+using ExcelReportCreatorProject.Domain;
+using ExcelReportCreatorProject.Service.Creator;
+using ExcelReportCreatorProject.Service.MarkerExtraction;
+using ExcelReportCreatorProject.Service.ResourceObjectProvider;
 using Newtonsoft.Json;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.Util;
+using NPOI.XSSF.Extractor;
 using NPOI.XSSF.UserModel;
 using Test;
 using Test_ClosedXML;
@@ -22,7 +27,7 @@ namespace XlsxTemplateReporter
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             var templates = new[]
             {
-                "test_totalRow",
+                "test_1",
             };
             var files = templates
                 .Select(x => new {
@@ -37,11 +42,28 @@ namespace XlsxTemplateReporter
                 using var fileStream = File.Open(file.In, FileMode.Open, FileAccess.ReadWrite);
                 var workbook = new XSSFWorkbook(fileStream);
 
-                var excelReportCreator = new ExcelReportCreator(workbook);
-                var resourceInjector = new ResourceInjector(ctx => { });
-                excelReportCreator.SetInjector(resourceInjector);
+                var resourceInjector = new ResourceInjector(ctx => {
+                    var region = ctx.MarkerRegion;
+                    var sheet = ctx.Workbook.GetSheetAt(region.StartMarker.Position.SheetIndex);
+                    var resourceObject = ctx.ResourceObject;
 
-                using (var outputFileStream = File.Open(file.Out, FileMode.Create, FileAccess.ReadWrite))
+                    Console.WriteLine($"sheet: {sheet.SheetName}");
+                    Console.WriteLine($"region: marker {{{{{region.StartMarker.Id}}}}} from [{region.StartMarker.Position.RowIndex};{region.StartMarker.Position.CellIndex}] to [{region.EndMarker.Position.RowIndex};{region.EndMarker.Position.RowIndex}]");
+                    Console.WriteLine($"resourceObject: {resourceObject.GetType().Name}");
+                });
+                var resourceObjectProvider = new ResourceObjectProvider();
+                var excelReportCreator = new ExcelReportCreator(new ExcelReportCreatorOptions
+                {
+                    ResourceInjector = resourceInjector,
+                    ResourceObjectProvider = resourceObjectProvider,
+                    MarkerExtractorOptions = new MarkerExtractorOptions
+                    {
+                        MarkerOptions = "{{.}}"
+                    }
+                });
+                excelReportCreator.Create(workbook);
+
+                using(var outputFileStream = File.Open(file.Out, FileMode.Create, FileAccess.ReadWrite))
                     workbook.Write(outputFileStream);
             });
 

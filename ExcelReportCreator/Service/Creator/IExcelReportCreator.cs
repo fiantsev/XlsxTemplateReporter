@@ -1,10 +1,9 @@
-﻿using System;
+﻿using NPOI.SS.UserModel;
 
 namespace ExcelReportCreatorProject
 {
     public interface IExcelReportCreator
     {
-        void SetInjector(IResourceInjector injector);
-        void Execute();
+        void Create(IWorkbook workbook);
     }
 }

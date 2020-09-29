@@ -1,12 +1,12 @@
-﻿using ExcelReportCreatorProject.Domain;
-using ExcelReportCreatorProject.Domain.Data;
+﻿using ExcelReportCreatorProject.Domain.ResourceObjects;
+using ExcelReportCreatorProject.Domain.Markers;
 using NPOI.SS.UserModel;
 
 namespace ExcelReportCreatorProject
 {
     public class InjectionContext
     {
-        public Marker Marker { get; set; }
+        public MarkerRegion MarkerRegion { get; set; }
         public ResourceObject ResourceObject { get; set; }
         public IWorkbook Workbook { get; set; }
     }
