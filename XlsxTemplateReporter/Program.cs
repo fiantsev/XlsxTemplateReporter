@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using ClosedXML.Excel;
+using ExcelReportCreatorProject;
 using Newtonsoft.Json;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.Util;
@@ -16,6 +18,37 @@ namespace XlsxTemplateReporter
     class Program
     {
         static void Main(string[] args)
+        {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            var templates = new[]
+            {
+                "test_totalRow",
+            };
+            var files = templates
+                .Select(x => new {
+                    In = $"./Templates/{x}.xlsx",
+                    Out = $"./Output/{x}.out.xlsx"
+                })
+                .ToList();
+
+            files.ForEach(file =>
+            {
+                Console.WriteLine($"workbook: {file}");
+                using var fileStream = File.Open(file.In, FileMode.Open, FileAccess.ReadWrite);
+                var workbook = new XSSFWorkbook(fileStream);
+
+                var excelReportCreator = new ExcelReportCreator(workbook);
+                var resourceInjector = new ResourceInjector(ctx => { });
+                excelReportCreator.SetInjector(resourceInjector);
+
+                using (var outputFileStream = File.Open(file.Out, FileMode.Create, FileAccess.ReadWrite))
+                    workbook.Write(outputFileStream);
+            });
+
+            Console.ReadKey();
+        }
+
+        static void Main1(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             var templates = new[]
@@ -54,17 +87,17 @@ namespace XlsxTemplateReporter
             //    Out = $"./Output/0503151_fss.out.xls"
             //});
 
-            files.ForEach(file =>
-            {
-                Console.WriteLine($"workbook: {file}");
-                using var fileStream = File.Open(file.In, FileMode.Open, FileAccess.ReadWrite);
-                var workbook = new XSSFWorkbook(fileStream);
-                TemplateParser.PrintFullInfo(workbook);
-                Util.CopyRange((XSSFSheet)workbook.GetSheetAt(0), CellRangeAddress.ValueOf("B4:D4"), CellRangeAddress.ValueOf("B7:D7"));
-                (new TemplateDataInjectorService()).InjectData(workbook, PrepareData());
-                using (var outputFileStream = File.Open(file.Out, FileMode.Create, FileAccess.ReadWrite))
-                    workbook.Write(outputFileStream);
-            });
+            //files.ForEach(file =>
+            //{
+            //    Console.WriteLine($"workbook: {file}");
+            //    using var fileStream = File.Open(file.In, FileMode.Open, FileAccess.ReadWrite);
+            //    var workbook = new XSSFWorkbook(fileStream);
+            //    TemplateParser.PrintFullInfo(workbook);
+            //    Util.CopyRange((XSSFSheet)workbook.GetSheetAt(0), CellRangeAddress.ValueOf("B4:D4"), CellRangeAddress.ValueOf("B7:D7"));
+            //    (new TemplateDataInjectorService()).InjectData(workbook, PrepareData());
+            //    using (var outputFileStream = File.Open(file.Out, FileMode.Create, FileAccess.ReadWrite))
+            //        workbook.Write(outputFileStream);
+            //});
 
             //files.ForEach(file =>
             //{
@@ -79,6 +112,16 @@ namespace XlsxTemplateReporter
             //});
 
             //Console.WriteLine("Press any key to exit");
+            var dataTable = new DataTable("table1");
+            dataTable.Columns.Add("header1", typeof(string));
+            dataTable.Columns.Add("header2", typeof(string));
+            dataTable.Columns.Add("header3", typeof(DateTime));
+            dataTable.Rows.Add("r1", "11", DateTime.Now);
+            dataTable.Rows.Add("r2", "21", DateTime.UtcNow);
+            dataTable.WriteXml(Console.OpenStandardOutput());
+            foreach(DataRow row in dataTable.Rows)
+                foreach(var el in row.ItemArray)
+                    Console.WriteLine(el);
             Console.ReadKey();
         }
 
