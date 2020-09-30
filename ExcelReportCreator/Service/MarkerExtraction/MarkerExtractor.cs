@@ -1,5 +1,5 @@
 ﻿using ExcelReportCreatorProject.Domain;
-using ExcelReportCreatorProject.LowLevelOperations;
+using ExcelReportCreatorProject.Extensions;
 using NPOI.SS.UserModel;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,44 +8,54 @@ namespace ExcelReportCreatorProject.Service.MarkerExtraction
 {
     public class MarkerExtractor : IMarkerExtractor
     {
-        private readonly ISheet _sheet;
+        private readonly List<ISheet> _sheets;
         private readonly MarkerExtractorOptions _markerExtractorOptions;
 
         public MarkerExtractor(ISheet sheet, MarkerExtractorOptions markerExtractorOptions)
         {
-            _sheet = sheet;
+            _sheets = new List<ISheet> { sheet };
+            _markerExtractorOptions = markerExtractorOptions;
+        }
+
+        public MarkerExtractor(IWorkbook workbook, MarkerExtractorOptions markerExtractorOptions)
+        {
+            _sheets = new List<ISheet>(workbook.EnumerateSheets());
             _markerExtractorOptions = markerExtractorOptions;
         }
 
         public IEnumerator<Marker> GetEnumerator()
         {
             var markerOptions = _markerExtractorOptions.MarkerOptions;
-            for (var rowIndex = _sheet.FirstRowNum; rowIndex <= _sheet.LastRowNum; ++rowIndex)
+
+            foreach(var sheet in _sheets)
             {
-                var row = _sheet.GetRow(rowIndex);
-                if (row == null) continue;
-
-                for (var cellIndex = row.FirstCellNum; cellIndex < row.LastCellNum; ++cellIndex)
+                for (var rowIndex = sheet.FirstRowNum; rowIndex <= sheet.LastRowNum; ++rowIndex)
                 {
-                    var cell = row.GetCell(cellIndex);
-                    if (cell == null) continue;
+                    var row = sheet.GetRow(rowIndex);
+                    if (row == null) continue;
 
-                    if (cell.IsMarkedCell(markerOptions))
+                    for (var cellIndex = row.FirstCellNum; cellIndex < row.LastCellNum; ++cellIndex)
                     {
-                        var markerId = cell.ExtractMarkerValue(markerOptions);
-                        var isEndMarker = markerId.Substring(0, markerOptions.Terminator.Length) == markerOptions.Terminator;
-                        var marker = new Marker
+                        var cell = row.GetCell(cellIndex);
+                        if (cell == null) continue;
+
+                        if (cell.IsMarkedCell(markerOptions))
                         {
-                            Id = isEndMarker ? markerId.Substring(markerOptions.Terminator.Length) : markerId,
-                            Position = new MarkerPosition
+                            var markerId = cell.ExtractMarkerValue(markerOptions);
+                            var isEndMarker = markerId.Substring(0, markerOptions.Terminator.Length) == markerOptions.Terminator;
+                            var marker = new Marker
                             {
-                                SheetIndex = _sheet.Workbook.GetSheetIndex(_sheet),
-                                RowIndex = rowIndex,
-                                CellIndex = cellIndex
-                            },
-                            MarkerType = isEndMarker ? MarkerType.End : MarkerType.Start
-                        };
-                        yield return marker;
+                                Id = isEndMarker ? markerId.Substring(markerOptions.Terminator.Length) : markerId,
+                                Position = new MarkerPosition
+                                {
+                                    SheetIndex = sheet.Workbook.GetSheetIndex(sheet),
+                                    RowIndex = rowIndex,
+                                    CellIndex = cellIndex
+                                },
+                                MarkerType = isEndMarker ? MarkerType.End : MarkerType.Start
+                            };
+                            yield return marker;
+                        }
                     }
                 }
             }

@@ -3,7 +3,7 @@ using System.Threading;
 using ExcelReportCreatorProject.Domain;
 using NPOI.SS.UserModel;
 
-namespace ExcelReportCreatorProject.LowLevelOperations
+namespace ExcelReportCreatorProject.Extensions
 {
     public static class CellExtensions
     {
