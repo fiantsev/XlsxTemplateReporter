@@ -1,4 +1,6 @@
-﻿using ExcelReportCreatorProject.Domain;
+﻿using System;
+using System.Threading;
+using ExcelReportCreatorProject.Domain;
 using NPOI.SS.UserModel;
 
 namespace ExcelReportCreatorProject.LowLevelOperations
@@ -24,6 +26,27 @@ namespace ExcelReportCreatorProject.LowLevelOperations
         {
             var stringCellValue = cell.StringCellValue.Trim();
             return stringCellValue.Substring(markerOptions.Prefix.Length, cell.StringCellValue.Length - (markerOptions.Prefix.Length + markerOptions.Suffix.Length));
+        }
+
+        public static void SetDynamicCellValue(this ICell cell, object value)
+        {
+            switch (value)
+            {
+                case string stringValue:
+                    cell.SetCellType(CellType.String);
+                    cell.SetCellValue(stringValue);
+                    break;
+                case int intValue:
+                    cell.SetCellType(CellType.Numeric);
+                    cell.SetCellValue(intValue);
+                    break;
+                case double doubleValue:
+                    cell.SetCellType(CellType.Numeric);
+                    cell.SetCellValue(doubleValue);
+                    break;
+                default:
+                    throw new Exception($"Неизвестный тип: {value?.GetType().Name}");
+            }
         }
     }
 }

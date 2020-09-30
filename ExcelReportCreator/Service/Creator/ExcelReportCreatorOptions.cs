@@ -9,5 +9,6 @@ namespace ExcelReportCreatorProject.Service.Creator
         public IResourceInjector ResourceInjector { get; set; }
         public IResourceObjectProvider ResourceObjectProvider { get; set; }
         public MarkerExtractorOptions MarkerExtractorOptions { get; set; }
+        public FormulaEvaluationOptions FormulaEvaluationOptions { get; set; }
     }
 }

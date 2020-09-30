@@ -1,32 +1,33 @@
-﻿using NPOI.SS.UserModel;
+﻿using ExcelReportCreatorProject.LowLevelOperations;
+using NPOI.SS.UserModel;
 using System.Collections.Generic;
 
 namespace ExcelReportCreatorProject.Service.Injection
 {
     public static class InjectionExtensions
     {
-        public static void InjectListOfList(this InjectionContext injectionContext, List<List<string>> dataSet)
+        public static void InjectTable(this InjectionContext injectionContext, List<List<object>> table)
         {
-            var dataSetRowCount = dataSet.Count;
-            var dataSetColCount = dataSet.Count == 0
+            var rowCount = table.Count;
+            var columnCount = table.Count == 0
                 ? 0
-                : dataSet[0].Count;
+                : table[0].Count;
 
             var insertionStartRowIndex = injectionContext.MarkerRegion.StartMarker.Position.RowIndex;
             var insertionStartCellIndex = injectionContext.MarkerRegion.StartMarker.Position.CellIndex;
 
             var sheet = injectionContext.Workbook.GetSheetAt(injectionContext.MarkerRegion.StartMarker.Position.SheetIndex);
 
-            for (var dataRowIndex = 0; dataRowIndex < dataSetRowCount; ++dataRowIndex)
+            for (var dataRowIndex = 0; dataRowIndex < rowCount; ++dataRowIndex)
             {
-                var dataRow = dataSet[dataRowIndex];
+                var dataRow = table[dataRowIndex];
                 var currentRowIndex = insertionStartRowIndex + dataRowIndex;
                 var currentRow = sheet.GetRow(currentRowIndex);
 
                 if (currentRow == null)
                     currentRow = sheet.CreateRow(currentRowIndex);
 
-                for (var dataColIndex = 0; dataColIndex < dataSetColCount; ++dataColIndex)
+                for (var dataColIndex = 0; dataColIndex < columnCount; ++dataColIndex)
                 {
                     var dataValue = dataRow[dataColIndex];
                     var currentCellIndex = insertionStartCellIndex + dataColIndex;
@@ -35,8 +36,7 @@ namespace ExcelReportCreatorProject.Service.Injection
                     if (currentCell == null)
                         currentCell = currentRow.CreateCell(currentCellIndex);
 
-                    currentCell.SetCellType(CellType.Numeric);
-                    currentCell.SetCellValue(dataValue);
+                    currentCell.SetDynamicCellValue(dataValue);
                 }
             }
         }

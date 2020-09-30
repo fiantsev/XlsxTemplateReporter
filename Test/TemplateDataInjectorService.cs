@@ -91,7 +91,7 @@ namespace Test
         }
 
 
-        private void InsertCellRange(XSSFWorkbook workbook, MarkerInfo markerInfo, List<List<string>> dataSet)
+        private void InsertCellRange(XSSFWorkbook workbook, MarkerInfo markerInfo, List<List<object>> dataSet)
         {
             var dataSetRowCount = dataSet.Count;
             var dataSetColCount = dataSet.Count == 0
@@ -120,14 +120,14 @@ namespace Test
                     if (currentCell == null)
                         currentCell = currentRow.CreateCell(currentCellIndex);
 
-                    currentCell.SetCellType(CellType.String);
-                    currentCell.SetCellValue(dataValue);
+                    currentCell.SetCellType(CellType.Unknown);
+                    currentCell.SetCellValue(dataValue?.ToString());
                 }
             }
         }
 
 
-        private void InsertCellRangeIntoTable(XSSFWorkbook workbook, MarkerInfo markerInfo, List<List<string>> dataSet)
+        private void InsertCellRangeIntoTable(XSSFWorkbook workbook, MarkerInfo markerInfo, List<List<object>> dataSet)
         {
             var dataSetRowCount = dataSet.Count;
             var dataSetColCount = dataSet.Count == 0
@@ -158,8 +158,8 @@ namespace Test
                     if (currentCell == null)
                         currentCell = currentRow.CreateCell(currentCellIndex);
 
-                    currentCell.SetCellType(CellType.Numeric);
-                    currentCell.SetCellValue(dataValue);
+                    //currentCell.SetCellType(CellType.Numeric);
+                    currentCell.SetCellValue(dataValue?.ToString());
                 }
             }
 

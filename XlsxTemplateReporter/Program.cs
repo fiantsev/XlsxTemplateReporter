@@ -30,7 +30,7 @@ namespace XlsxTemplateReporter
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             var templates = new[]
             {
-                "test_1",
+                "template5",
             };
             var files = templates
                 .Select(x => new {
@@ -56,7 +56,7 @@ namespace XlsxTemplateReporter
 
                     switch (resourceObject)
                     {
-                        case TableResourceObject table: ctx.InjectListOfList(table.Table.Values); break;
+                        case TableResourceObject table: ctx.InjectTable(table.Table); break;
                         default: throw new Exception();
                     }
                     
@@ -64,12 +64,7 @@ namespace XlsxTemplateReporter
                 var resourceObjectProvider = new ResourceObjectProvider(markerId =>
                 {
                     var widgetData = PrepareData()["table1"];
-                    var table = new XTable
-                    {
-                        Colums = Invert(widgetData.Cols),
-                        Rows = widgetData.Rows,
-                        Values = Invert(widgetData.Values)
-                    };
+                    var table = WidgetDataToListOfList(widgetData);
                     var resource = new TableResourceObject
                     {
                         Table = table
@@ -83,6 +78,10 @@ namespace XlsxTemplateReporter
                     MarkerExtractorOptions = new MarkerExtractorOptions
                     {
                         MarkerOptions = "{{.}}"
+                    },
+                    FormulaEvaluationOptions = new FormulaEvaluationOptions
+                    {
+                        EvaluateFormulas = true
                     }
                 });
                 excelReportCreator.Create(workbook);
@@ -171,6 +170,39 @@ namespace XlsxTemplateReporter
             Console.ReadKey();
         }
 
+        static List<List<object>> WidgetDataToListOfList(WidgetData widgetData)
+        {
+
+            var result = new List<List<object>>();
+            var columns = Invert(widgetData.Cols);
+            var values = Invert(widgetData.Values);
+            var rows = widgetData.Rows;
+
+            var itemCountInFirstColumn = columns.FirstOrDefault()?.Count ?? 0;
+            var itemCountInFirstRow = rows.FirstOrDefault()?.Count ?? 0;
+
+            var combinedRowCount = rows.Count + columns.Count;
+
+            for (var rowIndex =0; rowIndex < combinedRowCount; ++rowIndex)
+            {
+                result.Add(new List<object>());
+                for(var columnIndex=0; columnIndex < itemCountInFirstColumn; ++columnIndex)
+                {
+                    if (rowIndex < columns.Count)
+                        if (columnIndex < itemCountInFirstRow)
+                            result[rowIndex].Add("");
+                        else
+                            result[rowIndex].Add(columns[rowIndex][columnIndex - itemCountInFirstRow]);
+                    else
+                        if (columnIndex < itemCountInFirstRow)
+                            result[rowIndex].Add(rows[rowIndex - columns.Count][columnIndex]);
+                        else
+                            result[rowIndex].Add(values[rowIndex - columns.Count][columnIndex - itemCountInFirstRow]);
+                }
+            }
+            return result;
+        }
+
         static Dictionary<string, WidgetData> PrepareData()
         {
             var files = new[]
@@ -185,10 +217,11 @@ namespace XlsxTemplateReporter
                     Name = file,
                     Data = JsonConvert.DeserializeObject<WidgetData>(File.ReadAllText($"./Data/{file}.json"))
                 })
-                .Select(x=> {
-                    x.Data.Values = Invert(x.Data.Values);
-                    return x;
-                });
+                //.Select(x=> {
+                //    x.Data.Values = Invert(x.Data.Values);
+                //    return x;
+                //})
+                ;
 
             var result = widgets.ToDictionary(x => x.Name, x => x.Data);
             return result;

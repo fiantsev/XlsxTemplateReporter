@@ -3,6 +3,7 @@ using ExcelReportCreatorProject.Service.Creator;
 using ExcelReportCreatorProject.Service.Injection;
 using ExcelReportCreatorProject.Service.MarkerExtraction;
 using ExcelReportCreatorProject.Service.ResourceObjectProvider;
+using NPOI.OpenXmlFormats.Spreadsheet;
 using NPOI.SS.UserModel;
 using System.Linq;
 
@@ -13,12 +14,14 @@ namespace ExcelReportCreatorProject
         private readonly IResourceInjector _resourceInjector;
         private readonly IResourceObjectProvider _resourceObjectProvider;
         private readonly MarkerExtractorOptions _markerExtractorOptions;
+        private readonly FormulaEvaluationOptions _formulaEvaluationOptions;
 
         public ExcelReportCreator(ExcelReportCreatorOptions options)
         {
             _resourceInjector = options.ResourceInjector;
             _resourceObjectProvider = options.ResourceObjectProvider;
             _markerExtractorOptions = options.MarkerExtractorOptions;
+            _formulaEvaluationOptions = options.FormulaEvaluationOptions;
         }
 
         public void Create(IWorkbook workbook)
@@ -35,6 +38,9 @@ namespace ExcelReportCreatorProject
                     InjectResourceToSheet(sheet, markerRegion);
                 }
             }
+
+            if (_formulaEvaluationOptions.EvaluateFormulas)
+                EvaluateFormulas(workbook);
         }
 
         private void InjectResourceToSheet(ISheet sheet, MarkerRegion markerRegion)
@@ -48,6 +54,29 @@ namespace ExcelReportCreatorProject
             };
 
             _resourceInjector.Inject(injectionContext);
+        }
+
+        private void EvaluateFormulas(IWorkbook workbook)
+        {
+            var formulaEvaluator = workbook.GetCreationHelper().CreateFormulaEvaluator();
+            foreach (var sheetIndex in Enumerable.Range(0, workbook.NumberOfSheets))
+            {
+                var sheet = workbook.GetSheetAt(sheetIndex);
+
+                for (var rowIndex = sheet.FirstRowNum; rowIndex <= sheet.LastRowNum; ++rowIndex)
+                {
+                    var row = sheet.GetRow(rowIndex);
+                    if (row == null) continue;
+
+                    for (var cellIndex = row.FirstCellNum; cellIndex < row.LastCellNum; ++cellIndex)
+                    {
+                        var cell = row.GetCell(cellIndex);
+                        if (cell == null) continue;
+
+                        formulaEvaluator.EvaluateFormulaCell(cell);
+                    }
+                }
+            }
         }
 
     }

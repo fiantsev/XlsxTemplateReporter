@@ -6,6 +6,6 @@ namespace Test
     {
         public List<List<string>> Cols { get; set; }
         public List<List<string>> Rows { get; set; }
-        public List<List<string>> Values { get; set; }
+        public List<List<object>> Values { get; set; }
     }
 }
