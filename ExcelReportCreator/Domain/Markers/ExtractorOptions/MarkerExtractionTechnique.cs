@@ -1,4 +1,4 @@
-﻿namespace ExcelReportCreatorProject.Service.MarkerExtraction
+﻿namespace ExcelReportCreatorProject.Domain.Markers.ExtractorOptions
 {
     public enum MarkerExtractionTechnique
     {

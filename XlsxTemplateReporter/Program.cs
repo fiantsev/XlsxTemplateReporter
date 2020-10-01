@@ -7,10 +7,11 @@ using System.Net.Http.Headers;
 using ClosedXML.Excel;
 using ExcelReportCreatorProject;
 using ExcelReportCreatorProject.Domain;
+using ExcelReportCreatorProject.Domain.Markers.ExtractorOptions;
 using ExcelReportCreatorProject.Domain.ResourceObjects;
 using ExcelReportCreatorProject.Service.Creator;
 using ExcelReportCreatorProject.Service.Injection;
-using ExcelReportCreatorProject.Service.MarkerExtraction;
+using ExcelReportCreatorProject.Service.Injection.Injectors;
 using ExcelReportCreatorProject.Service.ResourceObjectProvider;
 using Newtonsoft.Json;
 using NPOI.HSSF.UserModel;
@@ -30,10 +31,11 @@ namespace XlsxTemplateReporter
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             var templates = new[]
             {
-                "template5",
+                "table and image test",
             };
             var files = templates
-                .Select(x => new {
+                .Select(x => new
+                {
                     In = $"./Templates/{x}.xlsx",
                     Out = $"./Output/{x}.out.xlsx"
                 })
@@ -45,7 +47,8 @@ namespace XlsxTemplateReporter
                 using var fileStream = File.Open(file.In, FileMode.Open, FileAccess.ReadWrite);
                 var workbook = new XSSFWorkbook(fileStream);
 
-                var resourceInjector = new ResourceInjector(ctx => {
+                var resourceInjector = new ResourceInjector(ctx =>
+                {
                     var region = ctx.MarkerRegion;
                     var sheet = ctx.Workbook.GetSheetAt(region.StartMarker.Position.SheetIndex);
                     var resourceObject = ctx.ResourceObject;
@@ -56,26 +59,49 @@ namespace XlsxTemplateReporter
 
                     switch (resourceObject)
                     {
-                        case TableResourceObject table: ctx.InjectTable(table.Table); break;
-                        default: throw new Exception();
+                        case TableResourceObject table:
+                            new TableResourceInjector().Inject(ctx);
+                            break;
+                        case ImageResourceObject image:
+                            new ImageResourceInjector().Inject(ctx);
+                            break;
+                        default:
+                            throw new Exception();
                     }
-                    
+
                 });
                 var resourceObjectProvider = new ResourceObjectProvider(markerId =>
                 {
-                    var widgetData = PrepareData()["table1"];
-                    var table = WidgetDataToListOfList(widgetData);
-                    var resource = new TableResourceObject
+                    if(markerId == "table1")
                     {
-                        Table = table
-                    };
-                    return resource;
+                        var widgetData = PrepareData()["table1"];
+                        var table = WidgetDataToListOfList(widgetData);
+                        var resource = new TableResourceObject
+                        {
+                            Table = table
+                        };
+                        return resource;
+
+                    }
+                    else if (markerId == "image1")
+                    {
+                        var imageBytes = File.ReadAllBytes("./Templates/img1.jpg");
+                        var resource = new ImageResourceObject
+                        {
+                            Image = imageBytes
+                        };
+                        return resource;
+                    }
+                    else
+                    {
+                        throw new Exception("По маркеру нет данных");
+                    }
                 });
                 var excelReportCreator = new ExcelReportCreator(new ExcelReportCreatorOptions
                 {
                     ResourceInjector = resourceInjector,
                     ResourceObjectProvider = resourceObjectProvider,
-                    MarkerExtractorOptions = new MarkerExtractorOptions
+                    MarkerExtractionOptions = new MarkerExtractionOptions
                     {
                         MarkerOptions = "{{.}}"
                     },
@@ -86,7 +112,7 @@ namespace XlsxTemplateReporter
                 });
                 excelReportCreator.Create(workbook);
 
-                using(var outputFileStream = File.Open(file.Out, FileMode.Create, FileAccess.ReadWrite))
+                using (var outputFileStream = File.Open(file.Out, FileMode.Create, FileAccess.ReadWrite))
                     workbook.Write(outputFileStream);
             });
 
@@ -120,7 +146,8 @@ namespace XlsxTemplateReporter
             };
             var files = templates
                 //.Where(x=>false)
-                .Select(x => new { 
+                .Select(x => new
+                {
                     In = $"./Templates/{x}.xlsx",
                     Out = $"./Output/{x}.out.xlsx"
                 })
@@ -164,8 +191,8 @@ namespace XlsxTemplateReporter
             dataTable.Rows.Add("r1", "11", DateTime.Now);
             dataTable.Rows.Add("r2", "21", DateTime.UtcNow);
             dataTable.WriteXml(Console.OpenStandardOutput());
-            foreach(DataRow row in dataTable.Rows)
-                foreach(var el in row.ItemArray)
+            foreach (DataRow row in dataTable.Rows)
+                foreach (var el in row.ItemArray)
                     Console.WriteLine(el);
             Console.ReadKey();
         }
@@ -183,10 +210,10 @@ namespace XlsxTemplateReporter
 
             var combinedRowCount = rows.Count + columns.Count;
 
-            for (var rowIndex =0; rowIndex < combinedRowCount; ++rowIndex)
+            for (var rowIndex = 0; rowIndex < combinedRowCount; ++rowIndex)
             {
                 result.Add(new List<object>());
-                for(var columnIndex=0; columnIndex < itemCountInFirstColumn; ++columnIndex)
+                for (var columnIndex = 0; columnIndex < itemCountInFirstColumn; ++columnIndex)
                 {
                     if (rowIndex < columns.Count)
                         if (columnIndex < itemCountInFirstRow)
@@ -195,9 +222,9 @@ namespace XlsxTemplateReporter
                             result[rowIndex].Add(columns[rowIndex][columnIndex - itemCountInFirstRow]);
                     else
                         if (columnIndex < itemCountInFirstRow)
-                            result[rowIndex].Add(rows[rowIndex - columns.Count][columnIndex]);
-                        else
-                            result[rowIndex].Add(values[rowIndex - columns.Count][columnIndex - itemCountInFirstRow]);
+                        result[rowIndex].Add(rows[rowIndex - columns.Count][columnIndex]);
+                    else
+                        result[rowIndex].Add(values[rowIndex - columns.Count][columnIndex - itemCountInFirstRow]);
                 }
             }
             return result;
@@ -240,7 +267,7 @@ namespace XlsxTemplateReporter
             for (var col = 0; col < colCount; ++col)
             {
                 result.Add(new List<T>());
-                for(var row=0;row<rowCount;++row)
+                for (var row = 0; row < rowCount; ++row)
                 {
                     result[col].Add(array[row][col]);
                 }

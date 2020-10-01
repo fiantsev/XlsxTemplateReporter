@@ -1,4 +1,4 @@
-﻿namespace ExcelReportCreatorProject.Domain
+﻿namespace ExcelReportCreatorProject.Domain.Markers
 {
     public class Marker
     {

@@ -4,6 +4,6 @@ namespace ExcelReportCreatorProject.Service.Injection
 {
     public interface IResourceInjector
     {
-        Action<InjectionContext> Inject { get; set; }
+        Action<InjectionContext> Inject { get; }
     }
 }

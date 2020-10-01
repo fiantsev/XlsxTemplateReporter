@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ExcelReportCreatorProject.Domain
+namespace ExcelReportCreatorProject.Domain.Markers
 {
     public class MarkerPosition : IEquatable<MarkerPosition>
     {

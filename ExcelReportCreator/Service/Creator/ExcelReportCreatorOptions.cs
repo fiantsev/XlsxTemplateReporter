@@ -1,5 +1,5 @@
-﻿using ExcelReportCreatorProject.Service.Injection;
-using ExcelReportCreatorProject.Service.MarkerExtraction;
+﻿using ExcelReportCreatorProject.Domain.Markers.ExtractorOptions;
+using ExcelReportCreatorProject.Service.Injection;
 using ExcelReportCreatorProject.Service.ResourceObjectProvider;
 
 namespace ExcelReportCreatorProject.Service.Creator
@@ -8,7 +8,7 @@ namespace ExcelReportCreatorProject.Service.Creator
     {
         public IResourceInjector ResourceInjector { get; set; }
         public IResourceObjectProvider ResourceObjectProvider { get; set; }
-        public MarkerExtractorOptions MarkerExtractorOptions { get; set; }
+        public MarkerExtractionOptions MarkerExtractionOptions { get; set; }
         public FormulaEvaluationOptions FormulaEvaluationOptions { get; set; }
     }
 }

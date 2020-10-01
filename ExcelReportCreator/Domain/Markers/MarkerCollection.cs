@@ -1,33 +1,34 @@
-﻿using ExcelReportCreatorProject.Domain;
+﻿using System.Collections;
+using System.Collections.Generic;
+using ExcelReportCreatorProject.Domain.Markers.ExtractorOptions;
+using ExcelReportCreatorProject.Domain.Npoi;
 using ExcelReportCreatorProject.Extensions;
 using NPOI.SS.UserModel;
-using System.Collections;
-using System.Collections.Generic;
 
-namespace ExcelReportCreatorProject.Service.MarkerExtraction
+namespace ExcelReportCreatorProject.Domain.Markers
 {
-    public class MarkerExtractor : IMarkerExtractor
+    public class MarkerCollection : IEnumerable<Marker>
     {
         private readonly List<ISheet> _sheets;
-        private readonly MarkerExtractorOptions _markerExtractorOptions;
+        private readonly MarkerExtractionOptions _markerExtractionOptions;
 
-        public MarkerExtractor(ISheet sheet, MarkerExtractorOptions markerExtractorOptions)
+        public MarkerCollection(ISheet sheet, MarkerExtractionOptions markerExtractorOptions)
         {
             _sheets = new List<ISheet> { sheet };
-            _markerExtractorOptions = markerExtractorOptions;
+            _markerExtractionOptions = markerExtractorOptions;
         }
 
-        public MarkerExtractor(IWorkbook workbook, MarkerExtractorOptions markerExtractorOptions)
+        public MarkerCollection(IWorkbook workbook, MarkerExtractionOptions markerExtractorOptions)
         {
-            _sheets = new List<ISheet>(workbook.EnumerateSheets());
-            _markerExtractorOptions = markerExtractorOptions;
+            _sheets = new List<ISheet>(new SheetCollection(workbook));
+            _markerExtractionOptions = markerExtractorOptions;
         }
 
         public IEnumerator<Marker> GetEnumerator()
         {
-            var markerOptions = _markerExtractorOptions.MarkerOptions;
+            var markerOptions = _markerExtractionOptions.MarkerOptions;
 
-            foreach(var sheet in _sheets)
+            foreach (var sheet in _sheets)
             {
                 for (var rowIndex = sheet.FirstRowNum; rowIndex <= sheet.LastRowNum; ++rowIndex)
                 {

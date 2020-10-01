@@ -1,11 +1,10 @@
-﻿using ExcelReportCreatorProject.Domain.Markers;
+﻿using System.Linq;
+using ExcelReportCreatorProject.Domain.Markers;
+using ExcelReportCreatorProject.Domain.Markers.ExtractorOptions;
 using ExcelReportCreatorProject.Service.Creator;
 using ExcelReportCreatorProject.Service.Injection;
-using ExcelReportCreatorProject.Service.MarkerExtraction;
 using ExcelReportCreatorProject.Service.ResourceObjectProvider;
-using NPOI.OpenXmlFormats.Spreadsheet;
 using NPOI.SS.UserModel;
-using System.Linq;
 
 namespace ExcelReportCreatorProject
 {
@@ -13,25 +12,25 @@ namespace ExcelReportCreatorProject
     {
         private readonly IResourceInjector _resourceInjector;
         private readonly IResourceObjectProvider _resourceObjectProvider;
-        private readonly MarkerExtractorOptions _markerExtractorOptions;
+        private readonly MarkerExtractionOptions _markerExtractionOptions;
         private readonly FormulaEvaluationOptions _formulaEvaluationOptions;
 
         public ExcelReportCreator(ExcelReportCreatorOptions options)
         {
             _resourceInjector = options.ResourceInjector;
             _resourceObjectProvider = options.ResourceObjectProvider;
-            _markerExtractorOptions = options.MarkerExtractorOptions;
+            _markerExtractionOptions = options.MarkerExtractionOptions;
             _formulaEvaluationOptions = options.FormulaEvaluationOptions;
         }
 
-        public void Create(IWorkbook workbook)
+        public IWorkbook Create(IWorkbook workbook)
         {
             foreach(var sheetIndex in Enumerable.Range(0, workbook.NumberOfSheets))
             {
                 var sheet = workbook.GetSheetAt(sheetIndex);
 
-                var markerExtractor = new MarkerExtractor(sheet, _markerExtractorOptions);
-                var markerRegions = new MarkerRegionCollection(markerExtractor);
+                var markerCollection = new MarkerCollection(sheet, _markerExtractionOptions);
+                var markerRegions = new MarkerRegionCollection(markerCollection);
 
                 foreach(var markerRegion in markerRegions)
                 {
@@ -41,6 +40,8 @@ namespace ExcelReportCreatorProject
 
             if (_formulaEvaluationOptions.EvaluateFormulas)
                 EvaluateFormulas(workbook);
+
+            return workbook;
         }
 
         private void InjectResourceToSheet(ISheet sheet, MarkerRegion markerRegion)

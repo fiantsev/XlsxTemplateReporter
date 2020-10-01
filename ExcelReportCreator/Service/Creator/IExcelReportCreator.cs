@@ -4,6 +4,6 @@ namespace ExcelReportCreatorProject
 {
     public interface IExcelReportCreator
     {
-        void Create(IWorkbook workbook);
+        IWorkbook Create(IWorkbook workbook);
     }
 }

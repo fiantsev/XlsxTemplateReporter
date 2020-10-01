@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Threading;
-using ExcelReportCreatorProject.Domain;
+using ExcelReportCreatorProject.Domain.Markers;
 using NPOI.SS.UserModel;
 
 namespace ExcelReportCreatorProject.Extensions

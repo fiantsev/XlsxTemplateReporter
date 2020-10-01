@@ -1,13 +1,15 @@
-﻿using ExcelReportCreatorProject.Extensions;
-using NPOI.SS.UserModel;
-using System.Collections.Generic;
+﻿using System;
+using ExcelReportCreatorProject.Domain.ResourceObjects;
+using ExcelReportCreatorProject.Extensions;
 
-namespace ExcelReportCreatorProject.Service.Injection
+namespace ExcelReportCreatorProject.Service.Injection.Injectors
 {
-    public static class InjectionExtensions
+    public class TableResourceInjector : IResourceInjector
     {
-        public static void InjectTable(this InjectionContext injectionContext, List<List<object>> table)
+        public Action<InjectionContext> Inject => (InjectionContext injectionContext) =>
         {
+            var table = (injectionContext.ResourceObject as TableResourceObject).Table;
+
             var rowCount = table.Count;
             var columnCount = table.Count == 0
                 ? 0
@@ -39,6 +41,6 @@ namespace ExcelReportCreatorProject.Service.Injection
                     currentCell.SetDynamicCellValue(dataValue);
                 }
             }
-        }
+        };
     }
 }
