@@ -8,6 +8,7 @@ using ClosedXML.Excel;
 using ExcelReportCreatorProject;
 using ExcelReportCreatorProject.Domain;
 using ExcelReportCreatorProject.Domain.Markers.ExtractorOptions;
+using ExcelReportCreatorProject.Domain.Npoi;
 using ExcelReportCreatorProject.Domain.ResourceObjects;
 using ExcelReportCreatorProject.Service.Creator;
 using ExcelReportCreatorProject.Service.Injection;
@@ -31,7 +32,8 @@ namespace XlsxTemplateReporter
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             var templates = new[]
             {
-                "table and image test",
+                "test_imageInjection",
+                //"test_tableInjection",
             };
             var files = templates
                 .Select(x => new
@@ -56,6 +58,7 @@ namespace XlsxTemplateReporter
                     Console.WriteLine($"sheet: {sheet.SheetName}");
                     Console.WriteLine($"region: marker {{{{{region.StartMarker.Id}}}}} from [{region.StartMarker.Position.RowIndex};{region.StartMarker.Position.CellIndex}] to [{region.EndMarker.Position.RowIndex};{region.EndMarker.Position.RowIndex}]");
                     Console.WriteLine($"resourceObject: {resourceObject.GetType().Name}");
+                    
 
                     switch (resourceObject)
                     {
@@ -72,29 +75,39 @@ namespace XlsxTemplateReporter
                 });
                 var resourceObjectProvider = new ResourceObjectProvider(markerId =>
                 {
-                    if(markerId == "table1")
+                    switch (markerId)
                     {
-                        var widgetData = PrepareData()["table1"];
-                        var table = WidgetDataToListOfList(widgetData);
-                        var resource = new TableResourceObject
-                        {
-                            Table = table
-                        };
-                        return resource;
+                        case "table1":
+                            {
+                                var widgetData = PrepareData()["table1"];
+                                var table = WidgetDataToListOfList(widgetData);
+                                var resource = new TableResourceObject
+                                {
+                                    Table = table
+                                };
+                                return resource;
 
-                    }
-                    else if (markerId == "image1")
-                    {
-                        var imageBytes = File.ReadAllBytes("./Templates/img1.jpg");
-                        var resource = new ImageResourceObject
-                        {
-                            Image = imageBytes
-                        };
-                        return resource;
-                    }
-                    else
-                    {
-                        throw new Exception("По маркеру нет данных");
+                            }
+                        case "image1":
+                            {
+                                var imageBytes = File.ReadAllBytes("./Templates/image1_642x1000.jpg");
+                                var resource = new ImageResourceObject
+                                {
+                                    Image = imageBytes
+                                };
+                                return resource;
+                            }
+                        case "image2":
+                            {
+                                var imageBytes = File.ReadAllBytes("./Templates/image2_884x2392.png");
+                                var resource = new ImageResourceObject
+                                {
+                                    Image = imageBytes
+                                };
+                                return resource;
+                            }
+                        default:
+                            throw new Exception("По маркеру нет данных");
                     }
                 });
                 var excelReportCreator = new ExcelReportCreator(new ExcelReportCreatorOptions
@@ -116,7 +129,7 @@ namespace XlsxTemplateReporter
                     workbook.Write(outputFileStream);
             });
 
-            Console.ReadKey();
+            //Console.ReadKey();
         }
 
         static void Main1(string[] args)

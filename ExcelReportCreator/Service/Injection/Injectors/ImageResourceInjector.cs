@@ -1,8 +1,8 @@
-﻿using System;
-using System.IO;
-using ExcelReportCreatorProject.Domain.ResourceObjects;
-using NPOI.SS.Formula;
+﻿using ExcelReportCreatorProject.Domain.ResourceObjects;
 using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
+using System;
+using System.IO;
 
 namespace ExcelReportCreatorProject.Service.Injection.Injectors
 {
@@ -11,7 +11,7 @@ namespace ExcelReportCreatorProject.Service.Injection.Injectors
         public Action<InjectionContext> Inject => (InjectionContext context) =>
         {
             var startMarker = context.MarkerRegion.StartMarker;
-            var workbook = context.Workbook;
+            var workbook = (XSSFWorkbook)context.Workbook;
             var sheet = workbook.GetSheetAt(startMarker.Position.SheetIndex);
             var cell = sheet
                 .GetRow(startMarker.Position.RowIndex)
@@ -21,51 +21,36 @@ namespace ExcelReportCreatorProject.Service.Injection.Injectors
             //убираем маркер
             cell.SetCellValue("");
 
-            var pictureIndex = workbook.AddPicture(imageResource.Image, PictureType.JPEG);
+            var drawing = (XSSFDrawing)sheet.CreateDrawingPatriarch();
 
-            var drawing = sheet.CreateDrawingPatriarch();
+            var addDimensionedImage = new AddDimensionedImage();
 
-            //var a = drawing.CreateAnchor(0, 0, 0, 0, startMarker.Position.RowIndex, startMarker.Position.CellIndex, startMarker.Position.RowIndex, startMarker.Position.CellIndex);
-            var anchor = workbook.GetCreationHelper().CreateClientAnchor();
-            anchor.Col1 = startMarker.Position.CellIndex;
-            anchor.Row1 = startMarker.Position.RowIndex;
-            anchor.Col2 = anchor.Col1 + 1;
-            anchor.Row2 = anchor.Row1 + 1;
-            //anchor.D
+            var imageWidthInMm = AddDimensionedImage.ConvertImageUnits.widthUnits2Millimetres(
+                AddDimensionedImage.ConvertImageUnits.pixel2WidthUnits(884)
+            );
+            var imageHeightInMm = AddDimensionedImage.ConvertImageUnits.widthUnits2Millimetres(
+                AddDimensionedImage.ConvertImageUnits.pixel2WidthUnits(2392)
+            );
 
-            var picture = (NPOI.XSSF.UserModel.XSSFPicture)drawing.CreatePicture(anchor, pictureIndex);
+            addDimensionedImage.addImageToSheet(
+                (startMarker.Position.RowIndex, startMarker.Position.CellIndex),
+                sheet,
+                drawing,
+                (imageResource.Image, PictureType.PNG),
+                imageWidthInMm,
+                imageHeightInMm,
+                AddDimensionedImage.OVERLAY_ROW_AND_COLUMN
+            );
 
-            picture.Resize();
+            //var pictureIndex = workbook.AddPicture(imageResource.Image, PictureType.PNG);
+
+            //var anchor = (XSSFClientAnchor)((XSSFCreationHelper)workbook.GetCreationHelper()).CreateClientAnchor();
+            //anchor.Col1 = startMarker.Position.CellIndex;
+            //anchor.Row1 = startMarker.Position.RowIndex;
+
+            //var picture = (XSSFPicture)drawing.CreatePicture(anchor, pictureIndex);
+
+            //picture.Resize(1);
         };
-
-        //private void AddImageToWorkBook(Image img, int colIndex, int rowIndex, XSSFWorkbook workbook, ISheet sheet)
-        //{
-        //    var ms = new MemoryStream();
-        //    img.Save(ms, ImageFormat.Png); 
-        //    byte[] data = ms.ToArray();
-        //    int pictureIndex = workbook.AddPicture(data, PictureType.PNG);
-        //    ICreationHelper helper = workbook.GetCreationHelper(); 
-        //    IDrawing drawing = sheet.CreateDrawingPatriarch(); 
-        //    IClientAnchor anchor = helper.CreateClientAnchor(); 
-        //    anchor.AnchorType = AnchorType.MoveDontResize; 
-        //    anchor.Col1 = colIndex;//0 index based column 
-        //    anchor.Row1 = rowIndex;//0 index based row 
-        //    IPicture picture = drawing.CreatePicture(anchor, pictureIndex); 
-        //    picture.Resize(); 
-        //}
-
-
-        public static byte[] ConvertImageToByteArray(string imagePath)
-        {
-            byte[] imageByteArray = null;
-            FileStream fileStream = new FileStream(imagePath, FileMode.Open, FileAccess.Read);
-            using (BinaryReader reader = new BinaryReader(fileStream))
-            {
-                imageByteArray = new byte[reader.BaseStream.Length];
-                for (int i = 0; i < reader.BaseStream.Length; i++)
-                    imageByteArray[i] = reader.ReadByte();
-            }
-            return imageByteArray;
-        }
     }
 }
