@@ -32,8 +32,8 @@ namespace XlsxTemplateReporter
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             var templates = new[]
             {
-                "test_imageInjection",
-                //"test_tableInjection",
+                //"insert image",
+                "insert table and image",
             };
             var files = templates
                 .Select(x => new
@@ -47,15 +47,15 @@ namespace XlsxTemplateReporter
             {
                 Console.WriteLine($"workbook: {file}");
                 using var fileStream = File.Open(file.In, FileMode.Open, FileAccess.ReadWrite);
-                var workbook = new XSSFWorkbook(fileStream);
+                var workbook = new XLWorkbook(fileStream);
 
                 var resourceInjector = new ResourceInjector(ctx =>
                 {
                     var region = ctx.MarkerRegion;
-                    var sheet = ctx.Workbook.GetSheetAt(region.StartMarker.Position.SheetIndex);
+                    var sheet = ctx.Workbook.Worksheet(region.StartMarker.Position.SheetIndex);
                     var resourceObject = ctx.ResourceObject;
 
-                    Console.WriteLine($"sheet: {sheet.SheetName}");
+                    Console.WriteLine($"sheet: {sheet.Name}");
                     Console.WriteLine($"region: marker {{{{{region.StartMarker.Id}}}}} from [{region.StartMarker.Position.RowIndex};{region.StartMarker.Position.CellIndex}] to [{region.EndMarker.Position.RowIndex};{region.EndMarker.Position.RowIndex}]");
                     Console.WriteLine($"resourceObject: {resourceObject.GetType().Name}");
                     
@@ -90,7 +90,7 @@ namespace XlsxTemplateReporter
                             }
                         case "image1":
                             {
-                                var imageBytes = File.ReadAllBytes("./Templates/image1_642x1000.jpg");
+                                var imageBytes = File.ReadAllBytes("./Templates/image1.jpg");
                                 var resource = new ImageResourceObject
                                 {
                                     Image = imageBytes
@@ -126,7 +126,7 @@ namespace XlsxTemplateReporter
                 excelReportCreator.Create(workbook);
 
                 using (var outputFileStream = File.Open(file.Out, FileMode.Create, FileAccess.ReadWrite))
-                    workbook.Write(outputFileStream);
+                    workbook.SaveAs(outputFileStream);
             });
 
             //Console.ReadKey();

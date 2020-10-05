@@ -1,22 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using NPOI.SS.UserModel;
+using ClosedXML.Excel;
 
 namespace ExcelReportCreatorProject.Domain.Npoi
 {
-    public class SheetCollection : IEnumerable<ISheet>
+    public class SheetCollection : IEnumerable<IXLWorksheet>
     {
-        private readonly IWorkbook _workbook;
+        private readonly XLWorkbook _workbook;
 
-        public SheetCollection(IWorkbook workbook) {
+        public SheetCollection(XLWorkbook workbook) {
             _workbook = workbook;
         }
 
-        public IEnumerator<ISheet> GetEnumerator()
+        public IEnumerator<IXLWorksheet> GetEnumerator()
         {
-            foreach (var sheetIndex in Enumerable.Range(0, _workbook.NumberOfSheets))
-                yield return _workbook.GetSheetAt(sheetIndex);
+            return _workbook.Worksheets.GetEnumerator();
+            //foreach (var sheetIndex in Enumerable.Range(0, _workbook.NumberOfSheets))
+            //    yield return _workbook.GetSheetAt(sheetIndex);
         }
 
         IEnumerator IEnumerable.GetEnumerator()

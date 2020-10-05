@@ -1,10 +1,10 @@
 ﻿using System.Linq;
+using ClosedXML.Excel;
 using ExcelReportCreatorProject.Domain.Markers;
 using ExcelReportCreatorProject.Domain.Markers.ExtractorOptions;
 using ExcelReportCreatorProject.Service.Creator;
 using ExcelReportCreatorProject.Service.Injection;
 using ExcelReportCreatorProject.Service.ResourceObjectProvider;
-using NPOI.SS.UserModel;
 
 namespace ExcelReportCreatorProject
 {
@@ -23,11 +23,11 @@ namespace ExcelReportCreatorProject
             _formulaEvaluationOptions = options.FormulaEvaluationOptions;
         }
 
-        public IWorkbook Create(IWorkbook workbook)
+        public IXLWorkbook Create(IXLWorkbook workbook)
         {
-            foreach(var sheetIndex in Enumerable.Range(0, workbook.NumberOfSheets))
+            foreach(var sheetIndex in Enumerable.Range(1, workbook.Worksheets.Count))
             {
-                var sheet = workbook.GetSheetAt(sheetIndex);
+                var sheet = workbook.Worksheet(sheetIndex);
 
                 var markerCollection = new MarkerCollection(sheet, _markerExtractionOptions);
                 var markerRegions = new MarkerRegionCollection(markerCollection);
@@ -44,7 +44,7 @@ namespace ExcelReportCreatorProject
             return workbook;
         }
 
-        private void InjectResourceToSheet(ISheet sheet, MarkerRegion markerRegion)
+        private void InjectResourceToSheet(IXLWorksheet sheet, MarkerRegion markerRegion)
         {
             var resourceObject = _resourceObjectProvider.Resolve(markerRegion.StartMarker.Id);
             var injectionContext = new InjectionContext
@@ -57,27 +57,27 @@ namespace ExcelReportCreatorProject
             _resourceInjector.Inject(injectionContext);
         }
 
-        private void EvaluateFormulas(IWorkbook workbook)
+        private void EvaluateFormulas(IXLWorkbook workbook)
         {
-            var formulaEvaluator = workbook.GetCreationHelper().CreateFormulaEvaluator();
-            foreach (var sheetIndex in Enumerable.Range(0, workbook.NumberOfSheets))
-            {
-                var sheet = workbook.GetSheetAt(sheetIndex);
+            //var formulaEvaluator = workbook.GetCreationHelper().CreateFormulaEvaluator();
+            //foreach (var sheetIndex in Enumerable.Range(0, workbook.NumberOfSheets))
+            //{
+            //    var sheet = workbook.GetSheetAt(sheetIndex);
 
-                for (var rowIndex = sheet.FirstRowNum; rowIndex <= sheet.LastRowNum; ++rowIndex)
-                {
-                    var row = sheet.GetRow(rowIndex);
-                    if (row == null) continue;
+            //    for (var rowIndex = sheet.FirstRowNum; rowIndex <= sheet.LastRowNum; ++rowIndex)
+            //    {
+            //        var row = sheet.GetRow(rowIndex);
+            //        if (row == null) continue;
 
-                    for (var cellIndex = row.FirstCellNum; cellIndex < row.LastCellNum; ++cellIndex)
-                    {
-                        var cell = row.GetCell(cellIndex);
-                        if (cell == null) continue;
+            //        for (var cellIndex = row.FirstCellNum; cellIndex < row.LastCellNum; ++cellIndex)
+            //        {
+            //            var cell = row.GetCell(cellIndex);
+            //            if (cell == null) continue;
 
-                        formulaEvaluator.EvaluateFormulaCell(cell);
-                    }
-                }
-            }
+            //            formulaEvaluator.EvaluateFormulaCell(cell);
+            //        }
+            //    }
+            //}
         }
 
     }

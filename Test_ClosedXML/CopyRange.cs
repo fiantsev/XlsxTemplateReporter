@@ -21,8 +21,8 @@ namespace Test_ClosedXML
 
             // Copy the table to another worksheet
             //var wsCopy = workbook.Worksheets.Add("Contacts Copy");
-            //sheetTo.Cell(to.FirstCell().Address.RowNumber, to.FirstCell().Address.ColumnNumber).Value = from;
-            to.FirstCell().Value = from;
+            //sheetTo.Cell(to.FirstCellUsed().Address.RowNumber, to.FirstCellUsed().Address.ColumnNumber).Value = from;
+            to.FirstCellUsed().Value = from;
 
             //workbook.SaveAs("CopyingRanges.xlsx");
         }

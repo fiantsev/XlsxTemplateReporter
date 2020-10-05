@@ -18,25 +18,25 @@ namespace ExcelReportCreatorProject.Service.Injection.Injectors
             var insertionStartRowIndex = injectionContext.MarkerRegion.StartMarker.Position.RowIndex;
             var insertionStartCellIndex = injectionContext.MarkerRegion.StartMarker.Position.CellIndex;
 
-            var sheet = injectionContext.Workbook.GetSheetAt(injectionContext.MarkerRegion.StartMarker.Position.SheetIndex);
+            var sheet = injectionContext.Workbook.Worksheet(injectionContext.MarkerRegion.StartMarker.Position.SheetIndex);
 
             for (var dataRowIndex = 0; dataRowIndex < rowCount; ++dataRowIndex)
             {
                 var dataRow = table[dataRowIndex];
                 var currentRowIndex = insertionStartRowIndex + dataRowIndex;
-                var currentRow = sheet.GetRow(currentRowIndex);
+                var currentRow = sheet.Row(currentRowIndex);
 
-                if (currentRow == null)
-                    currentRow = sheet.CreateRow(currentRowIndex);
+                //if (currentRow == null)
+                //    currentRow = sheet.Rows(). . CreateRow(currentRowIndex);
 
                 for (var dataColIndex = 0; dataColIndex < columnCount; ++dataColIndex)
                 {
                     var dataValue = dataRow[dataColIndex];
                     var currentCellIndex = insertionStartCellIndex + dataColIndex;
-                    var currentCell = currentRow.GetCell(currentCellIndex);
+                    var currentCell = currentRow.Cell(currentCellIndex);
 
-                    if (currentCell == null)
-                        currentCell = currentRow.CreateCell(currentCellIndex);
+                    //if (currentCell == null)
+                    //    currentCell = currentRow.CreateCell(currentCellIndex);
 
                     currentCell.SetDynamicCellValue(dataValue);
                 }

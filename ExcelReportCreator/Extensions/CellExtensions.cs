@@ -1,16 +1,16 @@
 ﻿using System;
+using ClosedXML.Excel;
 using ExcelReportCreatorProject.Domain.Markers;
-using NPOI.SS.UserModel;
 
 namespace ExcelReportCreatorProject.Extensions
 {
     public static class CellExtensions
     {
-        public static bool IsMarkedCell(this ICell cell, MarkerOptions markerOptions)
+        public static bool IsMarkedCell(this IXLCell cell, MarkerOptions markerOptions)
         {
-            if (cell.CellType == CellType.String)
+            if (cell.DataType == XLDataType.Text)
             {
-                var stringCellValue = cell.StringCellValue.Trim();
+                var stringCellValue = cell.GetString().Trim();
                 if (stringCellValue.Length < 4)
                     return false;
                 var isPrefixMatch = stringCellValue.Substring(0, markerOptions.Prefix.Length) == markerOptions.Prefix;
@@ -21,27 +21,27 @@ namespace ExcelReportCreatorProject.Extensions
             return false;
         }
 
-        public static string ExtractMarkerValue(this ICell cell, MarkerOptions markerOptions)
+        public static string ExtractMarkerValue(this IXLCell cell, MarkerOptions markerOptions)
         {
-            var stringCellValue = cell.StringCellValue.Trim();
-            return stringCellValue.Substring(markerOptions.Prefix.Length, cell.StringCellValue.Length - (markerOptions.Prefix.Length + markerOptions.Suffix.Length));
+            var stringCellValue = cell.GetString().Trim();
+            return stringCellValue.Substring(markerOptions.Prefix.Length, stringCellValue.Length - (markerOptions.Prefix.Length + markerOptions.Suffix.Length));
         }
 
-        public static void SetDynamicCellValue(this ICell cell, object value)
+        public static void SetDynamicCellValue(this IXLCell cell, object value)
         {
             switch (value)
             {
                 case string stringValue:
-                    cell.SetCellType(CellType.String);
-                    cell.SetCellValue(stringValue);
+                    cell.SetDataType(XLDataType.Text);
+                    cell.SetValue(stringValue);
                     break;
                 case int intValue:
-                    cell.SetCellType(CellType.Numeric);
-                    cell.SetCellValue(intValue);
+                    cell.SetDataType(XLDataType.Number);
+                    cell.SetValue(intValue);
                     break;
                 case double doubleValue:
-                    cell.SetCellType(CellType.Numeric);
-                    cell.SetCellValue(doubleValue);
+                    cell.SetDataType(XLDataType.Number);
+                    cell.SetValue(doubleValue);
                     break;
                 default:
                     throw new Exception($"Неизвестный тип: {value?.GetType().Name}");

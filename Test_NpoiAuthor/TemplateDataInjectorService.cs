@@ -29,7 +29,7 @@ namespace Test
         )
         {
             var result = new List<MarkerInfo>();
-            Enumerable.Range(0, workbook.NumberOfSheets).ToList()
+            Enumerable.Range(1, workbook.NumberOfSheets).ToList()
                 .ForEach(sheetIndex =>
                 {
                     var sheet = (XSSFSheet)workbook.GetSheetAt(sheetIndex);

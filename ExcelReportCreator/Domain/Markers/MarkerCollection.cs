@@ -1,26 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using ClosedXML.Excel;
 using ExcelReportCreatorProject.Domain.Markers.ExtractorOptions;
 using ExcelReportCreatorProject.Domain.Npoi;
 using ExcelReportCreatorProject.Extensions;
-using NPOI.SS.UserModel;
 
 namespace ExcelReportCreatorProject.Domain.Markers
 {
     public class MarkerCollection : IEnumerable<Marker>
     {
-        private readonly List<ISheet> _sheets;
+        private readonly List<IXLWorksheet> _sheets;
         private readonly MarkerExtractionOptions _markerExtractionOptions;
 
-        public MarkerCollection(ISheet sheet, MarkerExtractionOptions markerExtractorOptions)
+        public MarkerCollection(IXLWorksheet sheet, MarkerExtractionOptions markerExtractorOptions)
         {
-            _sheets = new List<ISheet> { sheet };
+            _sheets = new List<IXLWorksheet> { sheet };
             _markerExtractionOptions = markerExtractorOptions;
         }
 
-        public MarkerCollection(IWorkbook workbook, MarkerExtractionOptions markerExtractorOptions)
+        public MarkerCollection(XLWorkbook workbook, MarkerExtractionOptions markerExtractorOptions)
         {
-            _sheets = new List<ISheet>(new SheetCollection(workbook));
+            _sheets = new List<IXLWorksheet>(new SheetCollection(workbook));
             _markerExtractionOptions = markerExtractorOptions;
         }
 
@@ -30,14 +31,14 @@ namespace ExcelReportCreatorProject.Domain.Markers
 
             foreach (var sheet in _sheets)
             {
-                for (var rowIndex = sheet.FirstRowNum; rowIndex <= sheet.LastRowNum; ++rowIndex)
+                for (var rowIndex = sheet.FirstRowUsed().FirstCellUsed().Address.RowNumber; rowIndex <= sheet.LastRowUsed().FirstCellUsed().Address.RowNumber; ++rowIndex)
                 {
-                    var row = sheet.GetRow(rowIndex);
+                    var row = sheet.Row(rowIndex);
                     if (row == null) continue;
 
-                    for (var cellIndex = row.FirstCellNum; cellIndex < row.LastCellNum; ++cellIndex)
+                    for (var cellIndex = row.FirstCellUsed().Address.ColumnNumber; cellIndex <= row.LastCellUsed().Address.ColumnNumber; ++cellIndex)
                     {
-                        var cell = row.GetCell(cellIndex);
+                        var cell = row.Cell(cellIndex);
                         if (cell == null) continue;
 
                         if (cell.IsMarkedCell(markerOptions))
@@ -49,7 +50,7 @@ namespace ExcelReportCreatorProject.Domain.Markers
                                 Id = isEndMarker ? markerId.Substring(markerOptions.Terminator.Length) : markerId,
                                 Position = new MarkerPosition
                                 {
-                                    SheetIndex = sheet.Workbook.GetSheetIndex(sheet),
+                                    SheetIndex = sheet.Workbook.Worksheets.ToList().IndexOf(sheet) + 1,
                                     RowIndex = rowIndex,
                                     CellIndex = cellIndex
                                 },

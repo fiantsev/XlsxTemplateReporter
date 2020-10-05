@@ -1,9 +1,10 @@
-﻿using NPOI.SS.UserModel;
+﻿
+using ClosedXML.Excel;
 
 namespace ExcelReportCreatorProject
 {
     public interface IExcelReportCreator
     {
-        IWorkbook Create(IWorkbook workbook);
+        IXLWorkbook Create(IXLWorkbook workbook);
     }
 }
