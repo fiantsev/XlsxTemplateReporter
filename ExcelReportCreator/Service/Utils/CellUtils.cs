@@ -2,11 +2,11 @@
 using ClosedXML.Excel;
 using ExcelReportCreatorProject.Domain.Markers;
 
-namespace ExcelReportCreatorProject.Extensions
+namespace ExcelReportCreatorProject.Service.Utils
 {
-    public static class CellExtensions
+    public class CellUtils
     {
-        public static bool IsMarkedCell(this IXLCell cell, MarkerOptions markerOptions)
+        public static bool IsMarkedCell(IXLCell cell, MarkerOptions markerOptions)
         {
             if (cell.DataType == XLDataType.Text)
             {
@@ -21,13 +21,13 @@ namespace ExcelReportCreatorProject.Extensions
             return false;
         }
 
-        public static string ExtractMarkerValue(this IXLCell cell, MarkerOptions markerOptions)
+        public static string ExtractMarkerValue(IXLCell cell, MarkerOptions markerOptions)
         {
             var stringCellValue = cell.GetString().Trim();
             return stringCellValue.Substring(markerOptions.Prefix.Length, stringCellValue.Length - (markerOptions.Prefix.Length + markerOptions.Suffix.Length));
         }
 
-        public static void SetDynamicCellValue(this IXLCell cell, object value)
+        public static void SetDynamicCellValue(IXLCell cell, object value)
         {
             switch (value)
             {

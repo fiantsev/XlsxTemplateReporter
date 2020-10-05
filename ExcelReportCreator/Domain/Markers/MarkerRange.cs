@@ -2,13 +2,13 @@
 
 namespace ExcelReportCreatorProject.Domain.Markers
 {
-    public class MarkerRegion
+    public class MarkerRange
     {
         public Marker StartMarker { get; }
         public Marker EndMarker { get; }
         public bool Collapsed { get; }
 
-        public MarkerRegion(Marker startMarker, Marker endMarker = null)
+        public MarkerRange(Marker startMarker, Marker endMarker = null)
         {
             if(endMarker == null)
             {

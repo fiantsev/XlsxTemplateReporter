@@ -15,8 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ExcelReportCreator\ExcelReportCreatorProject.csproj" />
-    <ProjectReference Include="..\Test\Test_NpoiDotnet.csproj" />
-    <ProjectReference Include="..\Test_ClosedXML\Test_ClosedXML.csproj" />
   </ItemGroup>
 
   <ItemGroup>

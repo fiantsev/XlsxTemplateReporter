@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using ExcelReportCreatorProject.Domain.ResourceObjects;
+using ExcelReportCreatorProject.Service.Injection;
+using ExcelReportCreatorProject.Service.Injection.Injectors;
+
+namespace XlsxTemplateReporter
+{
+    public class ResourceInjector : IResourceInjector
+    {
+        public Action<InjectionContext> Inject => context =>
+        {
+            var region = context.MarkerRegion;
+            var sheet = context.Workbook.Worksheet(region.StartMarker.Position.SheetIndex);
+            var resourceObject = context.ResourceObject;
+
+            Console.WriteLine($"sheet: {sheet.Name}");
+            Console.WriteLine($"region: marker {{{{{region.StartMarker.Id}}}}} from [{region.StartMarker.Position.RowIndex};{region.StartMarker.Position.CellIndex}] to [{region.EndMarker.Position.RowIndex};{region.EndMarker.Position.RowIndex}]");
+            Console.WriteLine($"resourceObject: {resourceObject.GetType().Name}");
+
+
+            switch (resourceObject)
+            {
+                case TableResourceObject table:
+                    new TableResourceInjector().Inject(context);
+                    break;
+                case ImageResourceObject image:
+                    new ImageResourceInjector().Inject(context);
+                    break;
+                default:
+                    throw new Exception();
+            }
+
+        };
+    }
+}

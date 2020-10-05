@@ -6,7 +6,7 @@ namespace ExcelReportCreatorProject.Service.Injection
 {
     public class InjectionContext
     {
-        public MarkerRegion MarkerRegion { get; set; }
+        public MarkerRange MarkerRegion { get; set; }
         public ResourceObject ResourceObject { get; set; }
         public IXLWorkbook Workbook { get; set; }
     }

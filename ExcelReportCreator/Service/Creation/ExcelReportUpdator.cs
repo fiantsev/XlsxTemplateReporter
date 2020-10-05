@@ -1,50 +1,45 @@
 ﻿using System.Linq;
 using ClosedXML.Excel;
 using ExcelReportCreatorProject.Domain.Markers;
-using ExcelReportCreatorProject.Domain.Markers.ExtractorOptions;
-using ExcelReportCreatorProject.Service.Creator;
+using ExcelReportCreatorProject.Service.Creation;
+using ExcelReportCreatorProject.Service.Extraction;
 using ExcelReportCreatorProject.Service.Injection;
 using ExcelReportCreatorProject.Service.ResourceObjectProvider;
 
 namespace ExcelReportCreatorProject
 {
-    public class ExcelReportCreator : IExcelReportCreator
+    public class ExcelReportUpdator : IExcelReportUpdator
     {
         private readonly IResourceInjector _resourceInjector;
         private readonly IResourceObjectProvider _resourceObjectProvider;
-        private readonly MarkerExtractionOptions _markerExtractionOptions;
+        private readonly IMarkerExtractor _markerExtractor;
         private readonly FormulaEvaluationOptions _formulaEvaluationOptions;
 
-        public ExcelReportCreator(ExcelReportCreatorOptions options)
+        public ExcelReportUpdator(ExcelReportUpdatorOptions options)
         {
             _resourceInjector = options.ResourceInjector;
             _resourceObjectProvider = options.ResourceObjectProvider;
-            _markerExtractionOptions = options.MarkerExtractionOptions;
+            _markerExtractor = options.MarkerExtractor;
             _formulaEvaluationOptions = options.FormulaEvaluationOptions;
         }
 
-        public IXLWorkbook Create(IXLWorkbook workbook)
+        public void Update(IXLWorkbook workbook)
         {
             foreach(var sheetIndex in Enumerable.Range(1, workbook.Worksheets.Count))
             {
                 var sheet = workbook.Worksheet(sheetIndex);
-
-                var markerCollection = new MarkerCollection(sheet, _markerExtractionOptions);
-                var markerRegions = new MarkerRegionCollection(markerCollection);
+                var markers = _markerExtractor.Markers();
+                var markerRegions = new MarkerRangeCollection(markers);
 
                 foreach(var markerRegion in markerRegions)
-                {
                     InjectResourceToSheet(sheet, markerRegion);
-                }
             }
 
             if (_formulaEvaluationOptions.EvaluateFormulas)
                 EvaluateFormulas(workbook);
-
-            return workbook;
         }
 
-        private void InjectResourceToSheet(IXLWorksheet sheet, MarkerRegion markerRegion)
+        private void InjectResourceToSheet(IXLWorksheet sheet, MarkerRange markerRegion)
         {
             var resourceObject = _resourceObjectProvider.Resolve(markerRegion.StartMarker.Id);
             var injectionContext = new InjectionContext

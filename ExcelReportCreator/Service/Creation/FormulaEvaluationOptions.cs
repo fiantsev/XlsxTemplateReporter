@@ -1,4 +1,4 @@
-﻿namespace ExcelReportCreatorProject.Service.Creator
+﻿namespace ExcelReportCreatorProject.Service.Creation
 {
     public class FormulaEvaluationOptions
     {

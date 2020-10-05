@@ -1,6 +1,6 @@
 ﻿using System;
 using ExcelReportCreatorProject.Domain.ResourceObjects;
-using ExcelReportCreatorProject.Extensions;
+using ExcelReportCreatorProject.Service.Utils;
 
 namespace ExcelReportCreatorProject.Service.Injection.Injectors
 {
@@ -38,7 +38,7 @@ namespace ExcelReportCreatorProject.Service.Injection.Injectors
                     //if (currentCell == null)
                     //    currentCell = currentRow.CreateCell(currentCellIndex);
 
-                    currentCell.SetDynamicCellValue(dataValue);
+                    CellUtils.SetDynamicCellValue(currentCell, dataValue);
                 }
             }
         };

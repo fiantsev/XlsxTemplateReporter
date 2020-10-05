@@ -5,13 +5,7 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XlsxTemplateReporter", "XlsxTemplateReporter\XlsxTemplateReporter.csproj", "{FC961355-B907-4CBF-BEDE-19AD158F8554}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test_NpoiDotnet", "Test\Test_NpoiDotnet.csproj", "{1E1ED6D2-B9BF-42B4-A01B-B2BEAE182ED5}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test_NpoiAuthor", "Test_NpoiAuthor\Test_NpoiAuthor.csproj", "{2F797A76-FD8E-4C87-A805-9AEA55909590}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test_ClosedXML", "Test_ClosedXML\Test_ClosedXML.csproj", "{AB9EDA2A-EE9A-4EBA-9761-3233A62658AD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelReportCreatorProject", "ExcelReportCreator\ExcelReportCreatorProject.csproj", "{390BBA20-BAD4-492B-9750-B8C480F41343}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExcelReportCreatorProject", "ExcelReportCreator\ExcelReportCreatorProject.csproj", "{390BBA20-BAD4-492B-9750-B8C480F41343}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,18 +17,6 @@ Global
 		{FC961355-B907-4CBF-BEDE-19AD158F8554}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC961355-B907-4CBF-BEDE-19AD158F8554}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC961355-B907-4CBF-BEDE-19AD158F8554}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1E1ED6D2-B9BF-42B4-A01B-B2BEAE182ED5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1E1ED6D2-B9BF-42B4-A01B-B2BEAE182ED5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1E1ED6D2-B9BF-42B4-A01B-B2BEAE182ED5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1E1ED6D2-B9BF-42B4-A01B-B2BEAE182ED5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2F797A76-FD8E-4C87-A805-9AEA55909590}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2F797A76-FD8E-4C87-A805-9AEA55909590}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2F797A76-FD8E-4C87-A805-9AEA55909590}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2F797A76-FD8E-4C87-A805-9AEA55909590}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AB9EDA2A-EE9A-4EBA-9761-3233A62658AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AB9EDA2A-EE9A-4EBA-9761-3233A62658AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AB9EDA2A-EE9A-4EBA-9761-3233A62658AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AB9EDA2A-EE9A-4EBA-9761-3233A62658AD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{390BBA20-BAD4-492B-9750-B8C480F41343}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{390BBA20-BAD4-492B-9750-B8C480F41343}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{390BBA20-BAD4-492B-9750-B8C480F41343}.Release|Any CPU.ActiveCfg = Release|Any CPU
