@@ -38,15 +38,20 @@ namespace ExcelReportCreatorProject.Service.Extraction
         {
             foreach (var sheet in _sheets)
             {
-                for (var rowIndex = sheet.FirstRowUsed().FirstCellUsed().Address.RowNumber; rowIndex <= sheet.LastRowUsed().FirstCellUsed().Address.RowNumber; ++rowIndex)
-                {
-                    var row = sheet.Row(rowIndex);
-                    if (row == null) continue;
+                var rangeUsed = sheet.RangeUsed();
+                if (rangeUsed == null) continue;
 
-                    for (var cellIndex = row.FirstCellUsed().Address.ColumnNumber; cellIndex <= row.LastCellUsed().Address.ColumnNumber; ++cellIndex)
+                foreach(var row in rangeUsed.Rows())
+                //.Row(1).FirstCell().Address
+                //for (var rowIndex = sheet.FirstRowUsed().FirstCellUsed().Address.RowNumber; rowIndex <= sheet.LastRowUsed().FirstCellUsed().Address.RowNumber; ++rowIndex)
+                {
+                    //var row = sheet.Row(rowIndex);
+                    //if (row == null) continue;
+                    foreach(var cell in row.CellsUsed())
+                    //for (var cellIndex = row.FirstCellUsed().Address.ColumnNumber; cellIndex <= row.LastCellUsed().Address.ColumnNumber; ++cellIndex)
                     {
-                        var cell = row.Cell(cellIndex);
-                        if (cell == null) continue;
+                        //var cell = row.Cell(cellIndex);
+                        //if (cell == null) continue;
 
                         if (CellUtils.IsMarkedCell(cell, _markerOptions))
                         {
@@ -60,8 +65,8 @@ namespace ExcelReportCreatorProject.Service.Extraction
                                 Position = new MarkerPosition
                                 {
                                     SheetIndex = SheetUtils.SheetIndex(sheet),
-                                    RowIndex = rowIndex,
-                                    CellIndex = cellIndex
+                                    RowIndex = row.FirstCell().Address.RowNumber,
+                                    CellIndex = cell.Address.ColumnNumber
                                 },
                                 MarkerType = isEndMarker ? MarkerType.End : MarkerType.Start
                             };

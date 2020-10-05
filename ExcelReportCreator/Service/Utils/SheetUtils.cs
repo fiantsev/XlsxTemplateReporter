@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using ClosedXML.Excel;
+﻿using ClosedXML.Excel;
 
 namespace ExcelReportCreatorProject.Service.Utils
 {
@@ -7,7 +6,7 @@ namespace ExcelReportCreatorProject.Service.Utils
     {
         public static int SheetIndex(IXLWorksheet sheet)
         {
-            return sheet.Workbook.Worksheets.ToList().IndexOf(sheet) + 1;
+            return sheet.Position;
         }
     }
 }

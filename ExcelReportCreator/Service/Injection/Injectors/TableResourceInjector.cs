@@ -15,10 +15,10 @@ namespace ExcelReportCreatorProject.Service.Injection.Injectors
                 ? 0
                 : table[0].Count;
 
-            var insertionStartRowIndex = injectionContext.MarkerRegion.StartMarker.Position.RowIndex;
-            var insertionStartCellIndex = injectionContext.MarkerRegion.StartMarker.Position.CellIndex;
+            var insertionStartRowIndex = injectionContext.MarkerRange.StartMarker.Position.RowIndex;
+            var insertionStartCellIndex = injectionContext.MarkerRange.StartMarker.Position.CellIndex;
 
-            var sheet = injectionContext.Workbook.Worksheet(injectionContext.MarkerRegion.StartMarker.Position.SheetIndex);
+            var sheet = injectionContext.Workbook.Worksheet(injectionContext.MarkerRange.StartMarker.Position.SheetIndex);
 
             for (var dataRowIndex = 0; dataRowIndex < rowCount; ++dataRowIndex)
             {

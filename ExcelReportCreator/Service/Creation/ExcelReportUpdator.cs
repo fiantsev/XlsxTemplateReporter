@@ -44,7 +44,7 @@ namespace ExcelReportCreatorProject
             var resourceObject = _resourceObjectProvider.Resolve(markerRegion.StartMarker.Id);
             var injectionContext = new InjectionContext
             {
-                MarkerRegion = markerRegion,
+                MarkerRange = markerRegion,
                 Workbook = sheet.Workbook,
                 ResourceObject = resourceObject,
             };

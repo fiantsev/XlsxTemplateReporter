@@ -17,8 +17,7 @@ namespace XlsxTemplateReporter
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             var templates = new[]
             {
-                //"insert image",
-                "insert table and image",
+                "template1",
             };
             var files = templates
                 .Select(x => new

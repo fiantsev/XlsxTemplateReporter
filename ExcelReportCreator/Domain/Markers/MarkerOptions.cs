@@ -1,4 +1,6 @@
-﻿namespace ExcelReportCreatorProject.Domain.Markers
+﻿using System;
+
+namespace ExcelReportCreatorProject.Domain.Markers
 {
     public class MarkerOptions
     {
@@ -15,11 +17,8 @@
 
         public static implicit operator MarkerOptions(string markerTemplate)
         {
-            var trimmed = markerTemplate.Trim();
-            var prefix = trimmed.Substring(0, trimmed.Length / 2);
-            var terminator = trimmed.Substring(trimmed.Length / 2, 1);
-            var suffix = trimmed.Substring(trimmed.Length / 2 + 1);
-            return new MarkerOptions(prefix, suffix, terminator);
+            var parts = markerTemplate.Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            return new MarkerOptions(parts[0], parts[1], parts[2]);
         }
     }
 }

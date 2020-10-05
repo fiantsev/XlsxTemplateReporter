@@ -43,6 +43,8 @@ namespace XlsxTemplateReporter
                         };
                         return resource;
                     }
+                case "text":
+                    return new TextResourceObject { Text = "www.google.com" };
                 default:
                     throw new Exception("По маркеру нет данных");
             }

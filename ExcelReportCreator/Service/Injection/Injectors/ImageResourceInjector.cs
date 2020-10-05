@@ -10,7 +10,7 @@ namespace ExcelReportCreatorProject.Service.Injection.Injectors
         {
             
 
-            var startMarker = context.MarkerRegion.StartMarker;
+            var startMarker = context.MarkerRange.StartMarker;
             var workbook = context.Workbook;
             var sheet = workbook.Worksheet(startMarker.Position.SheetIndex);
             var cell = sheet

@@ -11,7 +11,7 @@ namespace XlsxTemplateReporter
     {
         public Action<InjectionContext> Inject => context =>
         {
-            var region = context.MarkerRegion;
+            var region = context.MarkerRange;
             var sheet = context.Workbook.Worksheet(region.StartMarker.Position.SheetIndex);
             var resourceObject = context.ResourceObject;
 
@@ -27,6 +27,9 @@ namespace XlsxTemplateReporter
                     break;
                 case ImageResourceObject image:
                     new ImageResourceInjector().Inject(context);
+                    break;
+                case TextResourceObject text:
+                    new TextResourceInjector().Inject(context);
                     break;
                 default:
                     throw new Exception();
