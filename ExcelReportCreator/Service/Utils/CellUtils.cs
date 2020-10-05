@@ -8,10 +8,10 @@ namespace ExcelReportCreatorProject.Service.Utils
     {
         public static bool IsMarkedCell(IXLCell cell, MarkerOptions markerOptions)
         {
-            if (cell.DataType == XLDataType.Text)
+            if (cell.DataType == XLDataType.Text && !cell.HasFormula)
             {
                 var stringCellValue = cell.GetString().Trim();
-                if (stringCellValue.Length < 4)
+                if (stringCellValue.Length < (markerOptions.Prefix.Length + markerOptions.Suffix.Length))
                     return false;
                 var isPrefixMatch = stringCellValue.Substring(0, markerOptions.Prefix.Length) == markerOptions.Prefix;
                 var isSuffixMatch = stringCellValue.Substring(stringCellValue.Length - markerOptions.Suffix.Length, markerOptions.Suffix.Length) == markerOptions.Suffix;

@@ -41,18 +41,10 @@ namespace ExcelReportCreatorProject.Service.Extraction
                 var rangeUsed = sheet.RangeUsed();
                 if (rangeUsed == null) continue;
 
-                foreach(var row in rangeUsed.Rows())
-                //.Row(1).FirstCell().Address
-                //for (var rowIndex = sheet.FirstRowUsed().FirstCellUsed().Address.RowNumber; rowIndex <= sheet.LastRowUsed().FirstCellUsed().Address.RowNumber; ++rowIndex)
+                foreach (var row in rangeUsed.Rows())
                 {
-                    //var row = sheet.Row(rowIndex);
-                    //if (row == null) continue;
-                    foreach(var cell in row.CellsUsed())
-                    //for (var cellIndex = row.FirstCellUsed().Address.ColumnNumber; cellIndex <= row.LastCellUsed().Address.ColumnNumber; ++cellIndex)
+                    foreach (var cell in row.CellsUsed())
                     {
-                        //var cell = row.Cell(cellIndex);
-                        //if (cell == null) continue;
-
                         if (CellUtils.IsMarkedCell(cell, _markerOptions))
                         {
                             var markerId = CellUtils.ExtractMarkerValue(cell, _markerOptions);

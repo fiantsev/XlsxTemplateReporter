@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using ClosedXML.Excel;
 using ExcelReportCreatorProject.Domain.Markers;
 using ExcelReportCreatorProject.Service.Creation;
@@ -24,15 +23,15 @@ namespace ExcelReportCreatorProject
 
         public void Inject(IXLWorkbook workbook)
         {
-            var markerExtractor = new MarkerExtractor(workbook, _markerOptions);
 
             foreach (var sheetIndex in Enumerable.Range(1, workbook.Worksheets.Count))
             {
                 var sheet = workbook.Worksheet(sheetIndex);
+                var markerExtractor = new MarkerExtractor(sheet, _markerOptions);
                 var markers = markerExtractor.Markers();
                 var markerRegions = new MarkerRangeCollection(markers);
 
-                foreach(var markerRegion in markerRegions)
+                foreach (var markerRegion in markerRegions)
                     InjectResourceToSheet(sheet, markerRegion);
             }
         }

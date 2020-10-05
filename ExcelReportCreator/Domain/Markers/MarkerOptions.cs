@@ -8,7 +8,7 @@ namespace ExcelReportCreatorProject.Domain.Markers
         public string Suffix { get; }
         public string Terminator { get; }
 
-        public MarkerOptions(string prefix, string suffix, string terminator)
+        public MarkerOptions(string prefix, string terminator, string suffix)
         {
             Prefix = prefix;
             Suffix = suffix;

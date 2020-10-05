@@ -31,12 +31,11 @@ namespace ExcelReportCreatorProject
         public TemplateBuilder InjectData(DocumentInjectorOptions options)
         {
             var workbook = new XLWorkbook(_template);
+
             var documentInjector = new DocumentInjector(options);
             documentInjector.Inject(workbook);
 
             workbook.SaveAs(_template);
-            //_template.Flush();
-            //_template.Seek(0, SeekOrigin.Begin);
 
             return this;
         }
@@ -45,12 +44,9 @@ namespace ExcelReportCreatorProject
         {
             _template.Seek(0, SeekOrigin.Begin);
             var workbook = new XSSFWorkbook(_template);
+
             var formulaEvaluator = new FormulaCalculator(options);
             formulaEvaluator.Recalculate(workbook);
-
-            //workbook.Write(_template, leaveOpen:true);
-            //_template.Flush();
-            //_template.Seek(0, SeekOrigin.Begin);
 
             return this;
         }
@@ -73,7 +69,6 @@ namespace ExcelReportCreatorProject
 
         public override void Close()
         {
-            //base.Close();
         }
     }
 }

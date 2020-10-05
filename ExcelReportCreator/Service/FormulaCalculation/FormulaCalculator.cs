@@ -1,7 +1,6 @@
-﻿using System.IO;
+﻿using System;
 using System.Linq;
 using NPOI.SS.UserModel;
-using NPOI.XSSF.UserModel;
 
 namespace ExcelReportCreatorProject.Service.FormulaCalculation
 {
@@ -31,7 +30,15 @@ namespace ExcelReportCreatorProject.Service.FormulaCalculation
                         var cell = row.GetCell(cellIndex);
                         if (cell == null) continue;
 
-                        formulaEvaluator.EvaluateFormulaCell(cell);
+                        try
+                        {
+                            formulaEvaluator.EvaluateFormulaCell(cell);
+                        }
+                        catch (Exception)
+                        {
+                            if (_options.SkipErrors) continue;
+                            throw;
+                        }
                     }
                 }
             }

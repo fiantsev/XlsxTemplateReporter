@@ -36,7 +36,7 @@ namespace XlsxTemplateReporter
                 var templateBuilder = new TemplateBuilder(fileStream);
                 //var workbook = new XLWorkbook(fileStream);
 
-                var markerOptions = new MarkerOptions("{{", "}}", ".");
+                var markerOptions = new MarkerOptions("{{", ".", "}}");
                 //var markerExtractor = new MarkerExtractor(workbook, markerOptions);
                 //при реальном использование есть необходимость извлечь все маркеры прежде чем двигаться дальше
                 //маркеры необходимы для того что бы отправить запрос за данными
@@ -57,7 +57,10 @@ namespace XlsxTemplateReporter
 
                 //var formulaEvaluator = new FormulaCalculator();
                 //formulaEvaluator.RecalculateFormulas(workbook);
-                templateBuilder.RecalculateFormulas(new FormulaCalculatorOptions { });
+                templateBuilder.RecalculateFormulas(new FormulaCalculatorOptions { SkipErrors = true});
+
+                documentInjectorOptions.MarkerOptions = "< . >";
+                templateBuilder.InjectData(documentInjectorOptions);
 
                 var documentStream = templateBuilder.Build();
                 using (var outputFileStream = File.Open(file.Out, FileMode.Create, FileAccess.ReadWrite))
