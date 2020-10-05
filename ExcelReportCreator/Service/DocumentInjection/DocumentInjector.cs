@@ -13,30 +13,28 @@ namespace ExcelReportCreatorProject
     {
         private readonly IResourceInjector _resourceInjector;
         private readonly IResourceObjectProvider _resourceObjectProvider;
-        private readonly IMarkerExtractor _markerExtractor;
+        private readonly MarkerOptions _markerOptions;
 
         public DocumentInjector(DocumentInjectorOptions options)
         {
             _resourceInjector = options.ResourceInjector;
             _resourceObjectProvider = options.ResourceObjectProvider;
-            _markerExtractor = options.MarkerExtractor;
+            _markerOptions = options.MarkerOptions;
         }
 
-        public void Inject(Stream workbookStream)
+        public void Inject(IXLWorkbook workbook)
         {
-            IXLWorkbook workbook = new XLWorkbook(workbookStream);
+            var markerExtractor = new MarkerExtractor(workbook, _markerOptions);
 
             foreach (var sheetIndex in Enumerable.Range(1, workbook.Worksheets.Count))
             {
                 var sheet = workbook.Worksheet(sheetIndex);
-                var markers = _markerExtractor.Markers();
+                var markers = markerExtractor.Markers();
                 var markerRegions = new MarkerRangeCollection(markers);
 
                 foreach(var markerRegion in markerRegions)
                     InjectResourceToSheet(sheet, markerRegion);
             }
-
-            workbook.SaveAs(workbookStream);
         }
 
         private void InjectResourceToSheet(IXLWorksheet sheet, MarkerRange markerRegion)

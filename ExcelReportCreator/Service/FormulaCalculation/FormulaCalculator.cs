@@ -14,10 +14,8 @@ namespace ExcelReportCreatorProject.Service.FormulaCalculation
             _options = options;
         }
 
-        public void Recalculate(Stream workbookStream)
+        public void Recalculate(IWorkbook workbook)
         {
-            IWorkbook workbook = new XSSFWorkbook(workbookStream);
-
             var formulaEvaluator = workbook.GetCreationHelper().CreateFormulaEvaluator();
             foreach (var sheetIndex in Enumerable.Range(0, workbook.NumberOfSheets))
             {
@@ -37,8 +35,6 @@ namespace ExcelReportCreatorProject.Service.FormulaCalculation
                     }
                 }
             }
-
-            workbook.Write(workbookStream);
         }
     }
 }

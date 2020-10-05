@@ -34,13 +34,13 @@ namespace XlsxTemplateReporter
                 using var fileStream = File.Open(file.In, FileMode.Open, FileAccess.ReadWrite);
 
                 var templateBuilder = new TemplateBuilder(fileStream);
-                var workbook = new XLWorkbook(fileStream);
+                //var workbook = new XLWorkbook(fileStream);
 
                 var markerOptions = new MarkerOptions("{{", "}}", ".");
-                var markerExtractor = new MarkerExtractor(workbook, markerOptions);
+                //var markerExtractor = new MarkerExtractor(workbook, markerOptions);
                 //при реальном использование есть необходимость извлечь все маркеры прежде чем двигаться дальше
                 //маркеры необходимы для того что бы отправить запрос за данными
-                var allMarkers = markerExtractor.Markers().ToList();
+                var allMarkers = templateBuilder.ReadMarkers(markerOptions);
                 Console.WriteLine($"Found {allMarkers.Count}: {string.Join(',', allMarkers.Select(x => x.Id))}");
 
                 var resourceInjector = new ResourceInjector();
@@ -50,7 +50,7 @@ namespace XlsxTemplateReporter
                 {
                     ResourceInjector = resourceInjector,
                     ResourceObjectProvider = resourceObjectProvider,
-                    MarkerExtractor = markerExtractor,
+                    MarkerOptions = markerOptions,
                 };
                 //excelReportCreator.Inject(workbook);
                 templateBuilder.InjectData(documentInjectorOptions);
@@ -59,9 +59,9 @@ namespace XlsxTemplateReporter
                 //formulaEvaluator.RecalculateFormulas(workbook);
                 templateBuilder.RecalculateFormulas(new FormulaCalculatorOptions { });
 
-                //var documentStream = templateBuilder.Build();
+                var documentStream = templateBuilder.Build();
                 using (var outputFileStream = File.Open(file.Out, FileMode.Create, FileAccess.ReadWrite))
-                    fileStream.CopyTo(outputFileStream);
+                    documentStream.CopyTo(outputFileStream);
             });
 
             Console.ReadKey();

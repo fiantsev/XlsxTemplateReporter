@@ -1,9 +1,9 @@
-﻿using System.IO;
+﻿using ClosedXML.Excel;
 
 namespace ExcelReportCreatorProject
 {
     public interface IDocumentInjector
     {
-        void Inject(Stream workbookStream);
+        void Inject(IXLWorkbook workbook);
     }
 }
