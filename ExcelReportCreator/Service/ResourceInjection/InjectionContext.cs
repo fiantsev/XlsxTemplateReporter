@@ -2,7 +2,7 @@
 using ExcelReportCreatorProject.Domain.Markers;
 using ClosedXML.Excel;
 
-namespace ExcelReportCreatorProject.Service.Injection
+namespace ExcelReportCreatorProject.Service.ResourceInjection
 {
     public class InjectionContext
     {

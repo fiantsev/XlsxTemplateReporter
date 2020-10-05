@@ -7,6 +7,7 @@ using ExcelReportCreatorProject;
 using ExcelReportCreatorProject.Domain.Markers;
 using ExcelReportCreatorProject.Service.Creation;
 using ExcelReportCreatorProject.Service.Extraction;
+using ExcelReportCreatorProject.Service.FormulaCalculation;
 
 namespace XlsxTemplateReporter
 {
@@ -31,6 +32,8 @@ namespace XlsxTemplateReporter
             {
                 Console.WriteLine($"workbook: {file}");
                 using var fileStream = File.Open(file.In, FileMode.Open, FileAccess.ReadWrite);
+
+                var templateBuilder = new TemplateBuilder(fileStream);
                 var workbook = new XLWorkbook(fileStream);
 
                 var markerOptions = new MarkerOptions("{{", "}}", ".");
@@ -42,23 +45,26 @@ namespace XlsxTemplateReporter
 
                 var resourceInjector = new ResourceInjector();
                 var resourceObjectProvider = new ObjectProvider();
-                var excelReportCreator = new ExcelReportUpdator(new ExcelReportUpdatorOptions
+                //var excelReportCreator = new DocumentInjector();
+                var documentInjectorOptions = new DocumentInjectorOptions
                 {
                     ResourceInjector = resourceInjector,
                     ResourceObjectProvider = resourceObjectProvider,
                     MarkerExtractor = markerExtractor,
-                    FormulaEvaluationOptions = new FormulaEvaluationOptions
-                    {
-                        EvaluateFormulas = true
-                    }
-                });
-                excelReportCreator.Update(workbook);
+                };
+                //excelReportCreator.Inject(workbook);
+                templateBuilder.InjectData(documentInjectorOptions);
 
+                //var formulaEvaluator = new FormulaCalculator();
+                //formulaEvaluator.RecalculateFormulas(workbook);
+                templateBuilder.RecalculateFormulas(new FormulaCalculatorOptions { });
+
+                //var documentStream = templateBuilder.Build();
                 using (var outputFileStream = File.Open(file.Out, FileMode.Create, FileAccess.ReadWrite))
-                    workbook.SaveAs(outputFileStream);
+                    fileStream.CopyTo(outputFileStream);
             });
 
-            //Console.ReadKey();
+            Console.ReadKey();
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using ExcelReportCreatorProject.Domain.ResourceObjects;
 using System;
 
-namespace ExcelReportCreatorProject.Service.ResourceObjectProvider
+namespace ExcelReportCreatorProject.Service.ResourceObjectProvision
 {
     public interface IResourceObjectProvider
     {

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using ExcelReportCreatorProject.Domain.ResourceObjects;
-using ExcelReportCreatorProject.Service.Injection;
-using ExcelReportCreatorProject.Service.Injection.Injectors;
+using ExcelReportCreatorProject.Service.ResourceInjection;
+using ExcelReportCreatorProject.Service.ResourceInjection.Injectors;
 
 namespace XlsxTemplateReporter
 {

@@ -1,7 +1,7 @@
 ﻿using ExcelReportCreatorProject.Domain.ResourceObjects;
 using System;
 
-namespace ExcelReportCreatorProject.Service.ResourceObjectProvider
+namespace ExcelReportCreatorProject.Service.ResourceObjectProvision
 {
     //Ответственность: по Marker.Id вернуть типизированный ResourceObject
     public class ResourceObjectProvider : IResourceObjectProvider

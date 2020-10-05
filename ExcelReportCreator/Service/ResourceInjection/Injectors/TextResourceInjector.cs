@@ -2,7 +2,7 @@
 using ExcelReportCreatorProject.Domain.ResourceObjects;
 using ExcelReportCreatorProject.Service.Utils;
 
-namespace ExcelReportCreatorProject.Service.Injection.Injectors
+namespace ExcelReportCreatorProject.Service.ResourceInjection.Injectors
 {
     public class TextResourceInjector : IResourceInjector
     {

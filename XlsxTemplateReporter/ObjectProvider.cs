@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ExcelReportCreatorProject.Domain.ResourceObjects;
-using ExcelReportCreatorProject.Service.ResourceObjectProvider;
+using ExcelReportCreatorProject.Service.ResourceObjectProvision;
 using Newtonsoft.Json;
 
 namespace XlsxTemplateReporter

@@ -2,7 +2,7 @@
 using ExcelReportCreatorProject.Domain.ResourceObjects;
 using ExcelReportCreatorProject.Service.Utils;
 
-namespace ExcelReportCreatorProject.Service.Injection.Injectors
+namespace ExcelReportCreatorProject.Service.ResourceInjection.Injectors
 {
     public class TableResourceInjector : IResourceInjector
     {
@@ -26,17 +26,11 @@ namespace ExcelReportCreatorProject.Service.Injection.Injectors
                 var currentRowIndex = insertionStartRowIndex + dataRowIndex;
                 var currentRow = sheet.Row(currentRowIndex);
 
-                //if (currentRow == null)
-                //    currentRow = sheet.Rows(). . CreateRow(currentRowIndex);
-
                 for (var dataColIndex = 0; dataColIndex < columnCount; ++dataColIndex)
                 {
                     var dataValue = dataRow[dataColIndex];
                     var currentCellIndex = insertionStartCellIndex + dataColIndex;
                     var currentCell = currentRow.Cell(currentCellIndex);
-
-                    //if (currentCell == null)
-                    //    currentCell = currentRow.CreateCell(currentCellIndex);
 
                     CellUtils.SetDynamicCellValue(currentCell, dataValue);
                 }

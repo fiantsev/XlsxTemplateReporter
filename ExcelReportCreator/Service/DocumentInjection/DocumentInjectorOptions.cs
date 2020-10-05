@@ -1,14 +1,13 @@
 ﻿using ExcelReportCreatorProject.Service.Extraction;
-using ExcelReportCreatorProject.Service.Injection;
-using ExcelReportCreatorProject.Service.ResourceObjectProvider;
+using ExcelReportCreatorProject.Service.ResourceInjection;
+using ExcelReportCreatorProject.Service.ResourceObjectProvision;
 
 namespace ExcelReportCreatorProject.Service.Creation
 {
-    public class ExcelReportUpdatorOptions
+    public class DocumentInjectorOptions
     {
         public IResourceInjector ResourceInjector { get; set; }
         public IResourceObjectProvider ResourceObjectProvider { get; set; }
         public IMarkerExtractor MarkerExtractor { get; set; }
-        public FormulaEvaluationOptions FormulaEvaluationOptions { get; set; }
     }
 }
