@@ -1,7 +1,7 @@
-﻿using ExcelReportCreatorProject.Domain.ResourceObjects;
+﻿using TemplateCooker.Domain.ResourceObjects;
 using System;
 
-namespace ExcelReportCreatorProject.Service.ResourceObjectProvision
+namespace TemplateCooker.Service.ResourceObjectProvision
 {
     public interface IResourceObjectProvider
     {

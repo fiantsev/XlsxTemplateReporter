@@ -1,8 +1,8 @@
 ﻿using System;
-using ExcelReportCreatorProject.Domain.ResourceObjects;
-using ExcelReportCreatorProject.Service.Utils;
+using TemplateCooker.Domain.ResourceObjects;
+using TemplateCooker.Service.Utils;
 
-namespace ExcelReportCreatorProject.Service.ResourceInjection.Injectors
+namespace TemplateCooker.Service.ResourceInjection.Injectors
 {
     public class TextResourceInjector : IResourceInjector
     {

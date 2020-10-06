@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ExcelReportCreatorProject.Service.ResourceInjection
+namespace TemplateCooker.Service.ResourceInjection
 {
     public class ResourceInjector : IResourceInjector
     {

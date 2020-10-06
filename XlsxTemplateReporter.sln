@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App", "XlsxTemplateReporter\App.csproj", "{FC961355-B907-4CBF-BEDE-19AD158F8554}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExcelReportCreatorProject", "ExcelReportCreator\ExcelReportCreatorProject.csproj", "{390BBA20-BAD4-492B-9750-B8C480F41343}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TemplateCooker", "ExcelReportCreator\TemplateCooker.csproj", "{390BBA20-BAD4-492B-9750-B8C480F41343}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

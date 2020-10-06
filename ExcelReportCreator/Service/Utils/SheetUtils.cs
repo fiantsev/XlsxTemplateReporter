@@ -1,6 +1,6 @@
 ﻿using ClosedXML.Excel;
 
-namespace ExcelReportCreatorProject.Service.Utils
+namespace TemplateCooker.Service.Utils
 {
     public class SheetUtils
     {

@@ -1,4 +1,4 @@
-﻿namespace ExcelReportCreatorProject.Service.FormulaCalculation
+﻿namespace TemplateCooker.Service.FormulaCalculation
 {
     public class FormulaCalculatorOptions
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ExcelReportCreatorProject.Domain.Markers
+namespace TemplateCooker.Domain.Markers
 {
     public class MarkerRange
     {

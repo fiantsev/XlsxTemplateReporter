@@ -2,13 +2,13 @@
 using System.IO;
 using System.Linq;
 using ClosedXML.Excel;
-using ExcelReportCreatorProject.Domain.Markers;
-using ExcelReportCreatorProject.Service.Creation;
-using ExcelReportCreatorProject.Service.Extraction;
-using ExcelReportCreatorProject.Service.FormulaCalculation;
+using TemplateCooker.Domain.Markers;
+using TemplateCooker.Service.Creation;
+using TemplateCooker.Service.Extraction;
+using TemplateCooker.Service.FormulaCalculation;
 using NPOI.XSSF.UserModel;
 
-namespace ExcelReportCreatorProject
+namespace TemplateCooker
 {
     public class TemplateBuilder
     {
@@ -25,7 +25,7 @@ namespace ExcelReportCreatorProject
         {
             var workbook = new XLWorkbook(_template);
             var markerExtractor = new MarkerExtractor(workbook, markerOptions);
-            return markerExtractor.Markers().ToList();
+            return markerExtractor.GetMarkers().ToList();
         }
 
         public TemplateBuilder InjectData(DocumentInjectorOptions options)
@@ -54,21 +54,24 @@ namespace ExcelReportCreatorProject
         public Stream Build()
         {
             _template.Flush();
-            _template.Close();
             _template.Seek(0, SeekOrigin.Begin);
             return _template;
         }
-    }
 
-    public class NonClosingMemoryStream : MemoryStream
-    {
-        public NonClosingMemoryStream(int capacity) : base(capacity)
+        private class NonClosingMemoryStream : MemoryStream
         {
+            public NonClosingMemoryStream(int capacity) : base(capacity)
+            {
+            }
 
-        }
+            public override void Close()
+            {
+            }
 
-        public override void Close()
-        {
+            public void RealClose()
+            {
+                base.Close();
+            }
         }
     }
 }

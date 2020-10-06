@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ExcelReportCreatorProject.Domain.ResourceObjects
+namespace TemplateCooker.Domain.ResourceObjects
 {
     public class TableResourceObject : ResourceObject
     {

@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using ClosedXML.Excel;
-using ExcelReportCreatorProject.Domain.Markers;
-using ExcelReportCreatorProject.Service.Utils;
+using TemplateCooker.Domain.Markers;
+using TemplateCooker.Service.Utils;
 
-namespace ExcelReportCreatorProject.Service.Extraction
+namespace TemplateCooker.Service.Extraction
 {
     public class MarkerExtractor : IMarkerExtractor, IEnumerable<Marker>
     {
@@ -29,7 +29,7 @@ namespace ExcelReportCreatorProject.Service.Extraction
             _markerOptions = markerOptions;
         }
 
-        public IEnumerable<Marker> Markers()
+        public IEnumerable<Marker> GetMarkers()
         {
             return this;
         }

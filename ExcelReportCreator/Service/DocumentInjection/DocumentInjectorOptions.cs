@@ -1,8 +1,8 @@
-﻿using ExcelReportCreatorProject.Domain.Markers;
-using ExcelReportCreatorProject.Service.ResourceInjection;
-using ExcelReportCreatorProject.Service.ResourceObjectProvision;
+﻿using TemplateCooker.Domain.Markers;
+using TemplateCooker.Service.ResourceInjection;
+using TemplateCooker.Service.ResourceObjectProvision;
 
-namespace ExcelReportCreatorProject.Service.Creation
+namespace TemplateCooker.Service.Creation
 {
     public class DocumentInjectorOptions
     {

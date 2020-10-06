@@ -1,6 +1,6 @@
 ﻿using ClosedXML.Excel;
 
-namespace ExcelReportCreatorProject
+namespace TemplateCooker
 {
     public interface IDocumentInjector
     {

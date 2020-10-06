@@ -1,8 +1,8 @@
 ﻿using System;
 using ClosedXML.Excel;
-using ExcelReportCreatorProject.Domain.Markers;
+using TemplateCooker.Domain.Markers;
 
-namespace ExcelReportCreatorProject.Service.Utils
+namespace TemplateCooker.Service.Utils
 {
     public class CellUtils
     {

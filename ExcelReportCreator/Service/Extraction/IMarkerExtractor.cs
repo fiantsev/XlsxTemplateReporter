@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using ExcelReportCreatorProject.Domain.Markers;
+using TemplateCooker.Domain.Markers;
 
-namespace ExcelReportCreatorProject.Service.Extraction
+namespace TemplateCooker.Service.Extraction
 {
     public interface IMarkerExtractor
     {
-        IEnumerable<Marker> Markers();
+        IEnumerable<Marker> GetMarkers();
     }
 }

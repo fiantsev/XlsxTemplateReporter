@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using ExcelReportCreatorProject.Domain.ResourceObjects;
-using ExcelReportCreatorProject.Service.ResourceObjectProvision;
+using TemplateCooker.Domain.ResourceObjects;
+using TemplateCooker.Service.ResourceObjectProvision;
 using Newtonsoft.Json;
 
 namespace XlsxTemplateReporter

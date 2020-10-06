@@ -1,8 +1,8 @@
-﻿using ExcelReportCreatorProject.Domain.ResourceObjects;
-using ExcelReportCreatorProject.Domain.Markers;
+﻿using TemplateCooker.Domain.ResourceObjects;
+using TemplateCooker.Domain.Markers;
 using ClosedXML.Excel;
 
-namespace ExcelReportCreatorProject.Service.ResourceInjection
+namespace TemplateCooker.Service.ResourceInjection
 {
     public class InjectionContext
     {

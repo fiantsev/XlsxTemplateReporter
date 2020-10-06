@@ -1,4 +1,4 @@
-﻿namespace ExcelReportCreatorProject.Domain.Markers
+﻿namespace TemplateCooker.Domain.Markers
 {
     public enum MarkerType
     {

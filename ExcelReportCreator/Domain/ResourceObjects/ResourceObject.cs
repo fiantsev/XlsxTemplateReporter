@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ExcelReportCreatorProject.Domain.ResourceObjects
+namespace TemplateCooker.Domain.ResourceObjects
 {
     public class ResourceObject
     {

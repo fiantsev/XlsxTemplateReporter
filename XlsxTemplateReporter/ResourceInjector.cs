@@ -1,7 +1,7 @@
 ﻿using System;
-using ExcelReportCreatorProject.Domain.ResourceObjects;
-using ExcelReportCreatorProject.Service.ResourceInjection;
-using ExcelReportCreatorProject.Service.ResourceInjection.Injectors;
+using TemplateCooker.Domain.ResourceObjects;
+using TemplateCooker.Service.ResourceInjection;
+using TemplateCooker.Service.ResourceInjection.Injectors;
 
 namespace XlsxTemplateReporter
 {

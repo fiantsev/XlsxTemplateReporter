@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 using ClosedXML.Excel;
-using ExcelReportCreatorProject.Domain.ResourceObjects;
+using TemplateCooker.Domain.ResourceObjects;
 
-namespace ExcelReportCreatorProject.Service.ResourceInjection.Injectors
+namespace TemplateCooker.Service.ResourceInjection.Injectors
 {
     public class ImageResourceInjector : IResourceInjector
     {

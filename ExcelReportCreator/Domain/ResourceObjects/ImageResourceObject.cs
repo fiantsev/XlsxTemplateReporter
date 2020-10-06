@@ -1,4 +1,4 @@
-﻿namespace ExcelReportCreatorProject.Domain.ResourceObjects
+﻿namespace TemplateCooker.Domain.ResourceObjects
 {
     public class ImageResourceObject : ResourceObject
     {

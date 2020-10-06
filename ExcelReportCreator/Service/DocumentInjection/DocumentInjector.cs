@@ -1,12 +1,12 @@
 ﻿using System.Linq;
 using ClosedXML.Excel;
-using ExcelReportCreatorProject.Domain.Markers;
-using ExcelReportCreatorProject.Service.Creation;
-using ExcelReportCreatorProject.Service.Extraction;
-using ExcelReportCreatorProject.Service.ResourceInjection;
-using ExcelReportCreatorProject.Service.ResourceObjectProvision;
+using TemplateCooker.Domain.Markers;
+using TemplateCooker.Service.Creation;
+using TemplateCooker.Service.Extraction;
+using TemplateCooker.Service.ResourceInjection;
+using TemplateCooker.Service.ResourceObjectProvision;
 
-namespace ExcelReportCreatorProject
+namespace TemplateCooker
 {
     public class DocumentInjector : IDocumentInjector
     {
@@ -28,7 +28,7 @@ namespace ExcelReportCreatorProject
             {
                 var sheet = workbook.Worksheet(sheetIndex);
                 var markerExtractor = new MarkerExtractor(sheet, _markerOptions);
-                var markers = markerExtractor.Markers();
+                var markers = markerExtractor.GetMarkers();
                 var markerRegions = new MarkerRangeCollection(markers);
 
                 foreach (var markerRegion in markerRegions)

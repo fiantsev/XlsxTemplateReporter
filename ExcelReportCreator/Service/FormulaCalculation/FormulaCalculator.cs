@@ -2,7 +2,7 @@
 using System.Linq;
 using NPOI.SS.UserModel;
 
-namespace ExcelReportCreatorProject.Service.FormulaCalculation
+namespace TemplateCooker.Service.FormulaCalculation
 {
     public class FormulaCalculator
     {

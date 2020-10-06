@@ -1,13 +1,11 @@
-﻿using System;
+﻿using TemplateCooker;
+using TemplateCooker.Domain.Markers;
+using TemplateCooker.Service.Creation;
+using TemplateCooker.Service.FormulaCalculation;
+using System;
 using System.Data;
 using System.IO;
 using System.Linq;
-using ClosedXML.Excel;
-using ExcelReportCreatorProject;
-using ExcelReportCreatorProject.Domain.Markers;
-using ExcelReportCreatorProject.Service.Creation;
-using ExcelReportCreatorProject.Service.Extraction;
-using ExcelReportCreatorProject.Service.FormulaCalculation;
 
 namespace XlsxTemplateReporter
 {
@@ -18,7 +16,7 @@ namespace XlsxTemplateReporter
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             var templates = new[]
             {
-                "template1",
+                "template6",
             };
             var files = templates
                 .Select(x => new
@@ -34,10 +32,8 @@ namespace XlsxTemplateReporter
                 using var fileStream = File.Open(file.In, FileMode.Open, FileAccess.ReadWrite);
 
                 var templateBuilder = new TemplateBuilder(fileStream);
-                //var workbook = new XLWorkbook(fileStream);
-
                 var markerOptions = new MarkerOptions("{{", ".", "}}");
-                //var markerExtractor = new MarkerExtractor(workbook, markerOptions);
+
                 //при реальном использование есть необходимость извлечь все маркеры прежде чем двигаться дальше
                 //маркеры необходимы для того что бы отправить запрос за данными
                 var allMarkers = templateBuilder.ReadMarkers(markerOptions);
@@ -45,18 +41,14 @@ namespace XlsxTemplateReporter
 
                 var resourceInjector = new ResourceInjector();
                 var resourceObjectProvider = new ObjectProvider();
-                //var excelReportCreator = new DocumentInjector();
                 var documentInjectorOptions = new DocumentInjectorOptions
                 {
                     ResourceInjector = resourceInjector,
                     ResourceObjectProvider = resourceObjectProvider,
                     MarkerOptions = markerOptions,
                 };
-                //excelReportCreator.Inject(workbook);
                 templateBuilder.InjectData(documentInjectorOptions);
 
-                //var formulaEvaluator = new FormulaCalculator();
-                //formulaEvaluator.RecalculateFormulas(workbook);
                 templateBuilder.RecalculateFormulas(new FormulaCalculatorOptions { SkipErrors = true});
 
                 documentInjectorOptions.MarkerOptions = "< . >";

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ExcelReportCreatorProject.Domain.Markers
+namespace TemplateCooker.Domain.Markers
 {
     public class MarkerRangeCollection : IEnumerable<MarkerRange>
     {
