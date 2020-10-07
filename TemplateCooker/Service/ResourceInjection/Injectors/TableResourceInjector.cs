@@ -8,6 +8,7 @@ namespace TemplateCooker.Service.ResourceInjection.Injectors
     {
         public Action<InjectionContext> Inject => (InjectionContext injectionContext) =>
         {
+            var markerPosition = injectionContext.MarkerRange.StartMarker.Position;
             var table = (injectionContext.ResourceObject as TableResourceObject).Table;
 
             var rowCount = table.Count;
@@ -15,26 +16,25 @@ namespace TemplateCooker.Service.ResourceInjection.Injectors
                 ? 0
                 : table[0].Count;
 
-            var insertionStartRowIndex = injectionContext.MarkerRange.StartMarker.Position.RowIndex;
-            var insertionStartCellIndex = injectionContext.MarkerRange.StartMarker.Position.CellIndex;
+            var sheet = injectionContext.Workbook.Worksheet(markerPosition.SheetIndex);
 
-            var sheet = injectionContext.Workbook.Worksheet(injectionContext.MarkerRange.StartMarker.Position.SheetIndex);
+            var topLeftCell = sheet.Cell(markerPosition.RowIndex, markerPosition.CellIndex);
+            var mergedRowsEnumerator = CellUtils.EnumerateMergedRows(topLeftCell).GetEnumerator();
 
-            for (var dataRowIndex = 0; dataRowIndex < rowCount; ++dataRowIndex)
+            table.ForEach(dataRow =>
             {
-                var dataRow = table[dataRowIndex];
-                var currentRowIndex = insertionStartRowIndex + dataRowIndex;
-                var currentRow = sheet.Row(currentRowIndex);
+                mergedRowsEnumerator.MoveNext();
+                var excelRow = mergedRowsEnumerator.Current;
 
-                for (var dataColIndex = 0; dataColIndex < columnCount; ++dataColIndex)
+                var firstCellOfRow = sheet.Cell(excelRow.FirstCell().Address.RowNumber, topLeftCell.Address.ColumnNumber);
+                var mergedCellsEnumerator = CellUtils.EnumerateMergedCells(firstCellOfRow).GetEnumerator();
+
+                dataRow.ForEach(dataValue =>
                 {
-                    var dataValue = dataRow[dataColIndex];
-                    var currentCellIndex = insertionStartCellIndex + dataColIndex;
-                    var currentCell = currentRow.Cell(currentCellIndex);
-
-                    CellUtils.SetDynamicCellValue(currentCell, dataValue);
-                }
-            }
+                    mergedCellsEnumerator.MoveNext();
+                    CellUtils.SetDynamicCellValue(mergedCellsEnumerator.Current, dataValue);
+                });
+            });
         };
     }
 }

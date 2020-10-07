@@ -1,5 +1,6 @@
-﻿using System;
-using ClosedXML.Excel;
+﻿using ClosedXML.Excel;
+using System;
+using System.Collections.Generic;
 using TemplateCooker.Domain.Markers;
 
 namespace TemplateCooker.Service.Utils
@@ -46,6 +47,16 @@ namespace TemplateCooker.Service.Utils
                 default:
                     throw new Exception($"Неизвестный тип: {value?.GetType().Name}");
             }
+        }
+
+        public static IEnumerable<IXLRow> EnumerateMergedRows(IXLCell fromCell)
+        {
+            return new MergedRowCollection(fromCell);
+        }
+
+        public static IEnumerable<IXLCell> EnumerateMergedCells(IXLCell fromCell)
+        {
+            return new MergedCellCollection(fromCell);
         }
     }
 }
