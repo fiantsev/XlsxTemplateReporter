@@ -59,7 +59,7 @@ namespace XlsxTemplateReporter
                     documentStream.CopyTo(outputFileStream);
             });
 
-            Console.ReadKey();
+            //Console.ReadKey();
         }
     }
 }

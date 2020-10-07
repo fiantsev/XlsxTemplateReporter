@@ -51,13 +51,16 @@ namespace TemplateCooker
             return this;
         }
 
-        public Stream Build()
+        public MemoryStream Build()
         {
             _template.Flush();
             _template.Seek(0, SeekOrigin.Begin);
             return _template;
         }
 
+        /// <summary>
+        /// NPOI закрывает поток в момент открытия файла, нам это не нужно
+        /// </summary>
         private class NonClosingMemoryStream : MemoryStream
         {
             public NonClosingMemoryStream(int capacity) : base(capacity)
