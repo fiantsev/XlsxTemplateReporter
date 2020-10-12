@@ -1,6 +1,6 @@
-﻿using System.Collections;
+﻿using ClosedXML.Excel;
+using System.Collections;
 using System.Collections.Generic;
-using ClosedXML.Excel;
 using TemplateCooker.Domain.Markers;
 using TemplateCooker.Service.Utils;
 

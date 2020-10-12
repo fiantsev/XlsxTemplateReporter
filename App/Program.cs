@@ -16,7 +16,8 @@ namespace XlsxTemplateReporter
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             var templates = new[]
             {
-                "template6",
+                "sum-formula2",
+                //"template9",
             };
             var files = templates
                 .Select(x => new
@@ -49,10 +50,7 @@ namespace XlsxTemplateReporter
                 };
                 templateBuilder.InjectData(documentInjectorOptions);
 
-                templateBuilder.RecalculateFormulas(new FormulaCalculatorOptions { SkipErrors = true});
-
-                documentInjectorOptions.MarkerOptions = "< . >";
-                templateBuilder.InjectData(documentInjectorOptions);
+                templateBuilder.RecalculateFormulas(new FormulaCalculatorOptions { SkipErrors = false });
 
                 var documentStream = templateBuilder.Build();
                 using (var outputFileStream = File.Open(file.Out, FileMode.Create, FileAccess.ReadWrite))
