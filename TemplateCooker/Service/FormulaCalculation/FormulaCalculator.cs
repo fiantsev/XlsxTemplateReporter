@@ -6,9 +6,9 @@ namespace TemplateCooker.Service.FormulaCalculation
 {
     public class FormulaCalculator
     {
-        private readonly FormulaCalculatorOptions _options;
+        private readonly FormulaCalculationOptions _options;
 
-        public FormulaCalculator(FormulaCalculatorOptions options)
+        public FormulaCalculator(FormulaCalculationOptions options)
         {
             _options = options;
         }

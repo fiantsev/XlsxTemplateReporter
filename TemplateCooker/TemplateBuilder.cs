@@ -11,68 +11,56 @@ namespace TemplateCooker
 {
     public class TemplateBuilder
     {
-        private MemoryStream _workbookStream;
+        private XLWorkbook _workbook;
+        private bool _recalculateFormulasOnBuild;
+        private FormulaCalculationOptions _formulaCalculationOptions;
 
-        public TemplateBuilder(Stream template)
+        public TemplateBuilder(Stream workbookStream)
         {
-            _workbookStream = new MemoryStream((int)template.Length);
-            template.CopyTo(_workbookStream);
-            _workbookStream.Seek(0, SeekOrigin.Begin);
+            workbookStream.Position = 0;
+            _workbook = new XLWorkbook(workbookStream);
         }
 
         public List<Marker> ReadMarkers(MarkerOptions markerOptions)
         {
-            var workbook = new XLWorkbook(_workbookStream);
-            var markerExtractor = new MarkerExtractor(workbook, markerOptions);
+            var markerExtractor = new MarkerExtractor(_workbook, markerOptions);
             return markerExtractor.GetMarkers().ToList();
         }
 
         public TemplateBuilder InjectData(DocumentInjectorOptions options)
         {
-            var newStream = new MemoryStream((int)_workbookStream.Length);
-            _workbookStream.Position = 0;
-
-            using (_workbookStream)
-            {
-                var workbook = new XLWorkbook(_workbookStream);
-
-                var documentInjector = new DocumentInjector(options);
-                documentInjector.Inject(workbook);
-
-                workbook.SaveAs(newStream);
-            }
-
-            _workbookStream = newStream;
-            _workbookStream.Position = 0;
+            var documentInjector = new DocumentInjector(options);
+            documentInjector.Inject(_workbook);
 
             return this;
         }
 
-        public TemplateBuilder RecalculateFormulas(FormulaCalculatorOptions options)
+        public TemplateBuilder RecalculateFormulasOnBuild(bool recalculateFormulasOnBuild = true)
         {
-            var newStream = new MemoryStream((int)_workbookStream.Length);
-            _workbookStream.Position = 0;
-
-            using (_workbookStream)
-            {
-                var workbook = new XLWorkbook(_workbookStream);
-
-                workbook.ForceFullCalculation = true;
-                workbook.FullCalculationOnLoad = true;
-
-                workbook.SaveAs(newStream, new SaveOptions { EvaluateFormulasBeforeSaving = true });
-            }
-
-            _workbookStream = newStream;
-            _workbookStream.Position = 0;
-
+            _recalculateFormulasOnBuild = recalculateFormulasOnBuild;
             return this;
         }
 
-        public MemoryStream Build()
+        public TemplateBuilder SetupFormulaCalculations(FormulaCalculationOptions formulaCalculationOptions)
         {
-            _workbookStream.Seek(0, SeekOrigin.Begin);
-            return _workbookStream;
+            _formulaCalculationOptions = formulaCalculationOptions;
+            return this;
+        }
+
+        public MemoryStream Build(bool validate = true)
+        {
+            var resultStream = new MemoryStream();
+
+            _workbook.ForceFullCalculation = _formulaCalculationOptions.ForceFullCalculation;
+            _workbook.FullCalculationOnLoad = _formulaCalculationOptions.FullCalculationOnLoad;
+
+            _workbook.SaveAs(resultStream, validate, _recalculateFormulasOnBuild);
+            resultStream.Position = 0;
+
+            //делаем инстанс более не юзабельным
+            _workbook = null;
+
+            return resultStream;
         }
     }
 }

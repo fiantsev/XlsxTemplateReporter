@@ -48,11 +48,13 @@ namespace XlsxTemplateReporter
                     ResourceObjectProvider = resourceObjectProvider,
                     MarkerOptions = markerOptions,
                 };
-                templateBuilder.InjectData(documentInjectorOptions);
 
-                templateBuilder.RecalculateFormulas(new FormulaCalculatorOptions { SkipErrors = false });
+                var documentStream = templateBuilder
+                    .InjectData(documentInjectorOptions)
+                    .SetupFormulaCalculations(new FormulaCalculationOptions { ForceFullCalculation = true, FullCalculationOnLoad = true })
+                    .RecalculateFormulasOnBuild()
+                    .Build();
 
-                var documentStream = templateBuilder.Build();
                 using (var outputFileStream = File.Open(file.Out, FileMode.Create, FileAccess.ReadWrite))
                     documentStream.CopyTo(outputFileStream);
             });
