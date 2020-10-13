@@ -18,33 +18,24 @@ namespace XlsxTemplateReporter
                     {
                         var widgetData = PrepareData()["table1"];
                         var table = WidgetDataToListOfList(widgetData);
-                        var resource = new TableResourceObject
-                        {
-                            Table = table
-                        };
+                        var resource = new TableResourceObject(table);
                         return resource;
 
                     }
                 case "image1":
                     {
                         var imageBytes = File.ReadAllBytes("./Templates/image1.jpg");
-                        var resource = new ImageResourceObject
-                        {
-                            Image = imageBytes
-                        };
+                        var resource = new ImageResourceObject(imageBytes);
                         return resource;
                     }
                 case "image2":
                     {
                         var imageBytes = File.ReadAllBytes("./Templates/image2_884x2392.png");
-                        var resource = new ImageResourceObject
-                        {
-                            Image = imageBytes
-                        };
+                        var resource = new ImageResourceObject(imageBytes);
                         return resource;
                     }
                 case "text1":
-                    return new TextResourceObject { Text = "www.google.com" };
+                    return new TextResourceObject("www.google.com");
                 default:
                     throw new Exception("По маркеру нет данных");
             }

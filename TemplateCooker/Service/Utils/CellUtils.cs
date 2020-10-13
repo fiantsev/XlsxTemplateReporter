@@ -33,16 +33,16 @@ namespace TemplateCooker.Service.Utils
             switch (value)
             {
                 case string stringValue:
-                    cell.SetDataType(XLDataType.Text);
                     cell.SetValue(stringValue);
+                    cell.SetDataType(XLDataType.Text);
                     break;
                 case int intValue:
-                    cell.SetDataType(XLDataType.Number);
                     cell.SetValue(intValue);
+                    cell.SetDataType(XLDataType.Number);
                     break;
                 case double doubleValue:
-                    cell.SetDataType(XLDataType.Number);
                     cell.SetValue(doubleValue);
+                    cell.SetDataType(XLDataType.Number);
                     break;
                 default:
                     throw new Exception($"Неизвестный тип: {value?.GetType().Name}");
