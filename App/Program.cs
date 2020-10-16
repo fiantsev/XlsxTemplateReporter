@@ -6,6 +6,7 @@ using System;
 using System.Data;
 using System.IO;
 using System.Linq;
+using TemplateCooker.Service;
 
 namespace XlsxTemplateReporter
 {
@@ -16,8 +17,7 @@ namespace XlsxTemplateReporter
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             var templates = new[]
             {
-                "sum-formula2",
-                //"template9",
+                "shift-content",
             };
             var files = templates
                 .Select(x => new
@@ -30,7 +30,7 @@ namespace XlsxTemplateReporter
             files.ForEach(file =>
             {
                 Console.WriteLine($"workbook: {file}");
-                using var fileStream = File.Open(file.In, FileMode.Open, FileAccess.ReadWrite);
+                using var fileStream = File.Open(file.In, FileMode.Open, FileAccess.Read);
 
                 var templateBuilder = new TemplateBuilder(fileStream);
                 var markerOptions = new MarkerOptions("{{", ".", "}}");
@@ -41,11 +41,11 @@ namespace XlsxTemplateReporter
                 Console.WriteLine($"Found {allMarkers.Count}: {string.Join(',', allMarkers.Select(x => x.Id))}");
 
                 var resourceInjector = new ResourceInjector();
-                var resourceObjectProvider = new ObjectProvider();
+                var injectionProvider = new InjectionProvider();
                 var documentInjectorOptions = new DocumentInjectorOptions
                 {
                     ResourceInjector = resourceInjector,
-                    ResourceObjectProvider = resourceObjectProvider,
+                    InjectionProvider = injectionProvider,
                     MarkerOptions = markerOptions,
                 };
 

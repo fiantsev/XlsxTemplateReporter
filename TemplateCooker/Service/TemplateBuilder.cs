@@ -7,7 +7,7 @@ using TemplateCooker.Service.Creation;
 using TemplateCooker.Service.Extraction;
 using TemplateCooker.Service.FormulaCalculation;
 
-namespace TemplateCooker
+namespace TemplateCooker.Service
 {
     public class TemplateBuilder
     {

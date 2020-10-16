@@ -3,6 +3,7 @@ using ClosedXML.Excel;
 using TemplateCooker.Domain.Markers;
 using TemplateCooker.Service.Creation;
 using TemplateCooker.Service.Extraction;
+using TemplateCooker.Service.InjectionProviders;
 using TemplateCooker.Service.ResourceInjection;
 using TemplateCooker.Service.ResourceObjectProvision;
 
@@ -11,13 +12,13 @@ namespace TemplateCooker
     public class DocumentInjector : IDocumentInjector
     {
         private readonly IResourceInjector _resourceInjector;
-        private readonly IResourceObjectProvider _resourceObjectProvider;
+        private readonly IInjectionProvider _injectionProvider;
         private readonly MarkerOptions _markerOptions;
 
         public DocumentInjector(DocumentInjectorOptions options)
         {
             _resourceInjector = options.ResourceInjector;
-            _resourceObjectProvider = options.ResourceObjectProvider;
+            _injectionProvider = options.InjectionProvider;
             _markerOptions = options.MarkerOptions;
         }
 
@@ -38,12 +39,12 @@ namespace TemplateCooker
 
         private void InjectResourceToSheet(IXLWorksheet sheet, MarkerRange markerRegion)
         {
-            var resourceObject = _resourceObjectProvider.Resolve(markerRegion.StartMarker.Id);
+            var injection = _injectionProvider.Resolve(markerRegion.StartMarker.Id);
             var injectionContext = new InjectionContext
             {
                 MarkerRange = markerRegion,
                 Workbook = sheet.Workbook,
-                ResourceObject = resourceObject,
+                Injection = injection,
             };
 
             _resourceInjector.Inject(injectionContext);

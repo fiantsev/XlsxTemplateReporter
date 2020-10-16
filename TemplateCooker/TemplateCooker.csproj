@@ -4,13 +4,17 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>TilliWilli</Authors>
-    <Version>1.0.7</Version>
+    <Version>1.0.9</Version>
     <Description>Excel reporting assistant</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.95.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Domain\Content\" />
   </ItemGroup>
 
 </Project>

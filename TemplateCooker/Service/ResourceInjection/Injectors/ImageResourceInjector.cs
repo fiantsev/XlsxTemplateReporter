@@ -1,7 +1,7 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.IO;
-using ClosedXML.Excel;
-using TemplateCooker.Domain.ResourceObjects;
+using TemplateCooker.Domain.Injections;
 
 namespace TemplateCooker.Service.ResourceInjection.Injectors
 {
@@ -15,12 +15,12 @@ namespace TemplateCooker.Service.ResourceInjection.Injectors
             var cell = sheet
                 .Row(startMarker.Position.RowIndex)
                 .Cell(startMarker.Position.CellIndex);
-            var imageResource = (context.ResourceObject as ImageResourceObject);
+            var imageResource = (context.Injection as ImageInjection).Resource;
 
             //убираем маркер
             cell.Clear(XLClearOptions.Contents);
 
-            using (var imageStream = new MemoryStream(imageResource.Image))
+            using (var imageStream = new MemoryStream(imageResource.Object))
             {
                 var image = sheet.AddPicture(imageStream)
                   .MoveTo(cell)

@@ -28,6 +28,9 @@ namespace TemplateCooker.Service.Utils
             return stringCellValue.Substring(markerOptions.Prefix.Length, stringCellValue.Length - (markerOptions.Prefix.Length + markerOptions.Suffix.Length));
         }
 
+        /// <summary>
+        /// TODO: переписать реализацию
+        /// </summary>
         public static void SetDynamicCellValue(IXLCell cell, object value)
         {
             switch (value)
@@ -38,6 +41,10 @@ namespace TemplateCooker.Service.Utils
                     break;
                 case int intValue:
                     cell.SetValue(intValue);
+                    cell.SetDataType(XLDataType.Number);
+                    break;
+                case long longValue:
+                    cell.SetValue(longValue);
                     cell.SetDataType(XLDataType.Number);
                     break;
                 case double doubleValue:
