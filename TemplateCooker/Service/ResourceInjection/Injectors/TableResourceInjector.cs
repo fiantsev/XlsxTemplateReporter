@@ -1,5 +1,6 @@
-﻿using DocumentFormat.OpenXml.Drawing.Charts;
+﻿using ClosedXML.Excel;
 using System;
+using System.Collections.Generic;
 using TemplateCooker.Domain.Injections;
 using TemplateCooker.Domain.ResourceObjects;
 using TemplateCooker.Service.Utils;
@@ -25,9 +26,13 @@ namespace TemplateCooker.Service.ResourceInjection.Injectors
                 case LayoutShiftType.None:
                     return;
                 case LayoutShiftType.MoveRows:
-                    injectionContext.Workbook.Worksheet(markerRange.StartMarker.Position.SheetIndex)
-                        .Row(markerRange.EndMarker.Position.RowIndex)
-                        .InsertRowsBelow(table.Count - 1); //-1 потому что ячейка в которой находиться маркер предоставляет одну ячейку под пространство вставки
+                    var countOfRowsToInsert = table.Count > 1
+                        ? table.Count - 1 //-1 потому что одна ячейка уже есть, та в которой находиться сам маркер
+                        : 0;
+                    if (countOfRowsToInsert != 0)
+                        injectionContext.Workbook.Worksheet(markerRange.StartMarker.Position.SheetIndex)
+                            .Row(markerRange.EndMarker.Position.RowIndex)
+                            .InsertRowsBelow(countOfRowsToInsert);
                     return;
                 case LayoutShiftType.MoveCells:
                     throw new Exception("Unsupported");
@@ -40,15 +45,18 @@ namespace TemplateCooker.Service.ResourceInjection.Injectors
         {
             var markerPosition = injectionContext.MarkerRange.StartMarker.Position;
             var table = (injectionContext.Injection as TableInjection).Resource.Object;
+            var sheet = injectionContext.Workbook.Worksheet(markerPosition.SheetIndex);
+            var topLeftCell = sheet.Cell(markerPosition.RowIndex, markerPosition.CellIndex);
 
             var rowCount = table.Count;
-            var columnCount = table.Count == 0
+            var columnCount = rowCount == 0
                 ? 0
                 : table[0].Count;
 
-            var sheet = injectionContext.Workbook.Worksheet(markerPosition.SheetIndex);
+            //удаляем маркер
+            if (rowCount == 0 || columnCount == 0)
+                topLeftCell.Clear(XLClearOptions.Contents);
 
-            var topLeftCell = sheet.Cell(markerPosition.RowIndex, markerPosition.CellIndex);
             var mergedRowsEnumerator = CellUtils.EnumerateMergedRows(topLeftCell).GetEnumerator();
 
             table.ForEach(dataRow =>

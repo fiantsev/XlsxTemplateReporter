@@ -19,13 +19,24 @@ namespace XlsxTemplateReporter
                     {
                         var widgetData = PrepareData()["table1"];
                         var table = WidgetDataToListOfList(widgetData);
-                        return new TableInjection { Resource = new TableResourceObject(table), LayoutShift = LayoutShiftType.MoveCells };
+                        return new TableInjection { Resource = new TableResourceObject(table), LayoutShift = LayoutShiftType.MoveRows };
 
                     }
                 case "table2":
                     {
                         var widgetData = PrepareData()["table1"];
                         var table = WidgetDataToListOfList(widgetData, true);
+                        return new TableInjection { Resource = new TableResourceObject(table), LayoutShift = LayoutShiftType.MoveCells };
+
+                    }
+                case "table3":
+                    {
+                        var widgetData = new WidgetData() { 
+                            Cols = new List<List<string>> { new List<string> { "column1" } } ,
+                            Rows = new List<List<string>> { new List<string> { "row1" } } ,
+                            Values = new List<List<object>> { new List<object>() },
+                        };
+                        var table = WidgetDataToListOfList(widgetData, false, false);
                         return new TableInjection { Resource = new TableResourceObject(table), LayoutShift = LayoutShiftType.MoveRows };
 
                     }

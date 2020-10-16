@@ -1,12 +1,11 @@
-﻿using TemplateCooker;
-using TemplateCooker.Domain.Markers;
-using TemplateCooker.Service.Creation;
-using TemplateCooker.Service.FormulaCalculation;
-using System;
+﻿using System;
 using System.Data;
 using System.IO;
 using System.Linq;
+using TemplateCooker.Domain.Markers;
 using TemplateCooker.Service;
+using TemplateCooker.Service.Creation;
+using TemplateCooker.Service.FormulaCalculation;
 
 namespace XlsxTemplateReporter
 {
@@ -17,7 +16,7 @@ namespace XlsxTemplateReporter
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             var templates = new[]
             {
-                "shift-content",
+                "template1",
             };
             var files = templates
                 .Select(x => new
