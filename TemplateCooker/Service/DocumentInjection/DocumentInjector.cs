@@ -1,11 +1,10 @@
-﻿using System.Linq;
-using ClosedXML.Excel;
+﻿using ClosedXML.Excel;
+using System.Linq;
 using TemplateCooker.Domain.Markers;
 using TemplateCooker.Service.Creation;
 using TemplateCooker.Service.Extraction;
 using TemplateCooker.Service.InjectionProviders;
 using TemplateCooker.Service.ResourceInjection;
-using TemplateCooker.Service.ResourceObjectProvision;
 
 namespace TemplateCooker
 {
