@@ -1,6 +1,4 @@
 ﻿using ClosedXML.Excel;
-using System;
-using System.Linq;
 
 namespace TemplateCooker.Service.FormulaCalculation
 {

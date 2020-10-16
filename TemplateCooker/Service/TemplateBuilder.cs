@@ -19,6 +19,7 @@ namespace TemplateCooker.Service
         {
             workbookStream.Position = 0;
             _workbook = new XLWorkbook(workbookStream);
+            _formulaCalculationOptions = new FormulaCalculationOptions();
         }
 
         public List<Marker> ReadMarkers(MarkerOptions markerOptions)

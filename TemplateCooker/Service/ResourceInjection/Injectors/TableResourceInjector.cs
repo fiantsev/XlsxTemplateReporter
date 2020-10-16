@@ -1,6 +1,5 @@
 ﻿using ClosedXML.Excel;
 using System;
-using System.Collections.Generic;
 using TemplateCooker.Domain.Injections;
 using TemplateCooker.Domain.ResourceObjects;
 using TemplateCooker.Service.Utils;

@@ -1,5 +1,5 @@
-﻿using TemplateCooker.Domain.ResourceObjects;
-using System;
+﻿using System;
+using TemplateCooker.Domain.ResourceObjects;
 
 namespace TemplateCooker.Service.ResourceObjectProvision
 {

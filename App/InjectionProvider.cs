@@ -31,9 +31,10 @@ namespace XlsxTemplateReporter
                     }
                 case "table3":
                     {
-                        var widgetData = new WidgetData() { 
-                            Cols = new List<List<string>> { new List<string> { "column1" } } ,
-                            Rows = new List<List<string>> { new List<string> { "row1" } } ,
+                        var widgetData = new WidgetData()
+                        {
+                            Cols = new List<List<string>> { new List<string> { "column1" } },
+                            Rows = new List<List<string>> { new List<string> { "row1" } },
                             Values = new List<List<object>> { new List<object>() },
                         };
                         var table = WidgetDataToListOfList(widgetData, false, false);

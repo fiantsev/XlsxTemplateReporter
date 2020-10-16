@@ -16,7 +16,8 @@ namespace XlsxTemplateReporter
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             var templates = new[]
             {
-                "template1",
+                //"template1",
+                "Данные для расчета КП 1 (1)",
             };
             var files = templates
                 .Select(x => new
@@ -51,8 +52,8 @@ namespace XlsxTemplateReporter
                 var documentStream = templateBuilder
                     .InjectData(documentInjectorOptions)
                     .SetupFormulaCalculations(new FormulaCalculationOptions { ForceFullCalculation = true, FullCalculationOnLoad = true })
-                    .RecalculateFormulasOnBuild()
-                    .Build();
+                    .RecalculateFormulasOnBuild(false)
+                    .Build(false);
 
                 using (var outputFileStream = File.Open(file.Out, FileMode.Create, FileAccess.ReadWrite))
                     documentStream.CopyTo(outputFileStream);

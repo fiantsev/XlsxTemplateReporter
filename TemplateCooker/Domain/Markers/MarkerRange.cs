@@ -10,7 +10,7 @@ namespace TemplateCooker.Domain.Markers
 
         public MarkerRange(Marker startMarker, Marker endMarker = null)
         {
-            if(endMarker == null)
+            if (endMarker == null)
             {
                 endMarker = startMarker.Clone();
                 endMarker.MarkerType = MarkerType.End;
